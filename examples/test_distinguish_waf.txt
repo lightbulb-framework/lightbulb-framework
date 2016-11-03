@@ -1,0 +1,5 @@
+use distinguish_waf
+define FILE  {library}/trees/waf_tree1.json
+define URL http://83.212.105.5/expose/
+define BLOCK impact
+start

@@ -1,0 +1,19 @@
+use HTTPHandler as my_query_handler_a
+define URL http://83.212.105.5/PHPIDS07/
+define BLOCK impact
+back
+use SFADIFF as my_sfadiff_a
+define SEED_FILE {library}/regex/PHPIDS070/12.y
+define HANDLER my_query_handler_a
+back
+use HTTPHandler as my_query_handler_b
+define URL http://83.212.105.5/PHPIDS065/
+define BLOCK impact
+back
+use SFADIFF as my_sfadiff_b
+define SEED_FILE {library}/regex/PHPIDS065/12.y
+define HANDLER my_query_handler_b
+back
+start my_sfadiff_a my_sfadiff_b
+
+

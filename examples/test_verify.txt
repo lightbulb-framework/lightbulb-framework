@@ -1,0 +1,4 @@
+use verify_waf_tree
+define FILE  {library}/trees/waf_tree1.json
+define WAFCONF  {library}/configs/waf_conf1.json
+start

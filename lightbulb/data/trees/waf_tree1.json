@@ -1,0 +1,49 @@
+{
+    "RESULT": {
+        "False": {
+            "RESULT": {
+                "False": {
+                    "RESULT": {
+                        "False": "WebCastellum 1.8.4", 
+                        "True": "Expose 2.4.0"
+                    }, 
+                    "STRING": "%23%0A"
+                }, 
+                "True": "ModSecurity Latest"
+            }, 
+            "STRING": ";"
+        }, 
+        "True": {
+            "RESULT": {
+                "False": {
+                    "RESULT": {
+                        "False": {
+                            "RESULT": {
+                                "False": {
+                                    "RESULT": {
+                                        "False": "PHPIDS 0.6.3", 
+                                        "True": {
+                                            "RESULT": {
+                                                "False": "PHPIDS 0.4.0", 
+                                                "True": "PHPIDS 0.5.0"
+                                            }, 
+                                            "STRING": "etc/<"
+                                        }
+                                    }, 
+                                    "STRING": "etc/,#"
+                                }, 
+                                "True": "PHPIDS 0.6.4"
+                            }, 
+                            "STRING": "et<\"!"
+                        }, 
+                        "True": "PHPIDS 0.7.0"
+                    }, 
+                    "STRING": ":/)"
+                }, 
+                "True": "PHPIDS 0.6.5"
+            }, 
+            "STRING": ":/B)"
+        }
+    }, 
+    "STRING": ":#<"
+}

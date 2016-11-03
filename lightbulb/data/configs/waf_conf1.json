@@ -1,0 +1,101 @@
+{
+    "1": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET",
+            "RULE": "lightbulb/data/regex/EXPOSE240",
+            "URL": "http://83.212.105.5/expose/"
+        }, 
+        "name": "Expose 2.4.0"
+    }, 
+    "2": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS070",
+            "URL": "http://83.212.105.5/PHPIDS07/"
+        }, 
+        "name": "PHPIDS 0.7.0"
+    },
+    "3": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS065",
+            "URL": "http://83.212.105.5/PHPIDS065/"
+        }, 
+        "name": "PHPIDS 0.6.5"
+    },
+    "4": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS064",
+            "URL": "http://83.212.105.5/PHPIDS064/"
+        }, 
+        "name": "PHPIDS 0.6.4"
+    }, 
+    "5": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS063",
+            "URL": "http://83.212.105.5/PHPIDS063/"
+        }, 
+        "name": "PHPIDS 0.6.3"
+    },  
+    "6": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS050",
+            "URL": "http://83.212.105.5/PHPIDS05/"
+        }, 
+        "name": "PHPIDS 0.5.0"
+    }, 
+    "7": {
+        "data": {
+            "BLOCK": "impact", 
+            "PARAM": "test",
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/PHPIDS040",
+            "URL": "http://83.212.105.5/PHPIDS04/"
+        }, 
+        "name": "PHPIDS 0.4.0"
+    }, 
+    "8": {
+        "data": {
+            "BLOCK": "permission", 
+            "PARAM": "lala", 
+            "BYPASS": "", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/MODSECCURRENT",
+            "URL": "https://byteharbor.com/lab/MODSEC300/"
+        }, 
+        "name": "ModSecurity Latest"
+    },
+    "9": {
+        "data": {
+            "BLOCK": "", 
+            "PARAM": "test",
+            "BYPASS": "Popups", 
+            "REQUEST_TYPE": "GET", 
+            "RULE": "lightbulb/data/regex/WEBCASTELLUM183",
+            "URL": "http://byteharbor.com:8080/miniapp/"
+        }, 
+        "name": "WebCastellum 1.8.4"
+    }
+}

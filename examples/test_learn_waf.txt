@@ -1,0 +1,9 @@
+use HTTPHandler as my_query_handler
+define URL http://83.212.105.5/PHPIDS07/
+define BLOCK impact
+back
+use GOFA as my_gofa
+define TESTS_FILE {library}/regex/PHPIDS070/12.y
+define HANDLER my_query_handler
+back
+start my_gofa

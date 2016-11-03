@@ -1,0 +1,7 @@
+s [ ]
+w [a-z0-9A-Z]
+W [^a-z0-9A-Z]
+d [0-9]
+%%
+((^{s}*[\;\>\"]{s}*(UNION|SELECT|CREATE|RENAME|TRUNCATE|LOAD|ALTER|DELETE|UPDATE|INSERT|DESC))|((SELECT|CREATE|RENAME|TRUNCATE|LOAD|ALTER|DELETE|UPDATE|INSERT|DESC){s}+(CONCAT|CHAR|CONCAT|LOAD\_FILE|0x){s}?\()|(END{s}*\)\;)|(\"{s}+REGEXP{W})) printf('attack detected');
+%%

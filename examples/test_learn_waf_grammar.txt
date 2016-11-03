@@ -1,0 +1,11 @@
+use HTTPHandler as my_query_handler
+define URL https://byteharbor.com/lab/MODSEC300/
+define PARAM lala
+define BLOCK permission
+back
+use GOFA as my_gofa
+define TESTS_FILE   {library}/grammars/query_sql.y
+define TESTS_FILE_TYPE GRAMMAR
+define HANDLER my_query_handler
+back
+start my_gofa

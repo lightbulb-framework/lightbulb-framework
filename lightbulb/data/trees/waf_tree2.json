@@ -1,0 +1,49 @@
+{
+    "RESULT": {
+        "False": "Expose 2.4.0", 
+        "True": {
+            "RESULT": {
+                "False": {
+                    "RESULT": {
+                        "False": {
+                            "RESULT": {
+                                "False": {
+                                    "RESULT": {
+                                        "False": "PHPIDS 0.5.0", 
+                                        "True": "PHPIDS 0.6.3"
+                                    }, 
+                                    "STRING": "union distinct (select"
+                                }, 
+                                "True": {
+                                    "RESULT": {
+                                        "False": "PHPIDS 0.4.0", 
+                                        "True": "PHPIDS 0.6.4"
+                                    }, 
+                                    "STRING": "case("
+                                }
+                            }, 
+                            "STRING": "\" background=a"
+                        }, 
+                        "True": "PHPIDS 0.6.5"
+                    }, 
+                    "STRING": ") when 1 then"
+                }, 
+                "True": {
+                    "RESULT": {
+                        "False": {
+                            "RESULT": {
+                                "False": "WebCastellum 1.8.4", 
+                                "True": "ModSecurity Latest"
+                            }, 
+                            "STRING": "select if(a"
+                        }, 
+                        "True": "PHPIDS 0.7.0"
+                    }, 
+                    "STRING": "case("
+                }
+            }, 
+            "STRING": "union select from"
+        }
+    }, 
+    "STRING": "'>"
+}

@@ -1,0 +1,3 @@
+-e git+https://github.com/GeorgeArgyros/symautomata#egg=symautomata-0.0.1
+-e git+https://github.com/GeorgeArgyros/sfalearn#egg=sfalearn-0.0.1
+

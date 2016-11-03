@@ -1,0 +1,22 @@
+use BROWSERHandler as my_query_handler_a
+define WSPORT 8000
+define WBPORT 8080
+define BROWSERPARSE True
+define DELAY 50
+define HOST localhost
+back
+use SFADIFF as my_sfadiff_a
+define SEED_FILE {library}/regex/BROWSER/html_p_attribute.y
+define HANDLER my_query_handler_a
+define DFA1_MINUS_DFA2 True
+back
+use HTTPHandler as my_query_handler_b
+define URL http://83.212.105.5/PHPIDS07/
+define BLOCK Impact
+back
+use SFADIFF as my_sfadiff_b
+define SEED_FILE {library}/regex/BROWSER/html_p_attribute.y
+define HANDLER my_query_handler_b
+define DFA1_MINUS_DFA2 True
+back
+start my_sfadiff_a my_sfadiff_b

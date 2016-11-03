@@ -1,0 +1,4 @@
+use gen_waf_tree
+define FILE_IN  {library}/configs/waf_conf1.json
+define FILE_OUT /tmp/waf_tree.json
+start

@@ -1,0 +1,12 @@
+use BROWSERHandler as my_query_handler
+define WSPORT 8000
+define WBPORT 8080
+define BROWSERPARSE False
+define DELAY 50
+define HOST localhost
+back
+use GOFA as my_gofa
+define TESTS_FILE {library}/regex/BROWSER/html_p_attribute.y
+define HANDLER my_query_handler
+back
+start my_gofa

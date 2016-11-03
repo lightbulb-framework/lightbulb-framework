@@ -1,0 +1,13 @@
+use SQLHandler as my_query_handler
+define HOST 127.0.0.1
+define PORT 3306
+define USERNAME root
+define PASSWORD root
+define DATABASE fuzzing
+define PREFIX_QUERY 'SELECT id FROM a WHERE a = **;'
+back
+use GOFA as my_gofa
+define TESTS_FILE {library}/regex/MYSQL/sql_unionselect1.y
+define HANDLER my_query_handler
+back
+start my_gofa

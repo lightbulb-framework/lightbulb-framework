@@ -1,0 +1,22 @@
+use SQLHandler as my_query_handler_a
+define HOST 127.0.0.1
+define PORT 3306
+define USERNAME root
+define PASSWORD root
+define DATABASE fuzzing
+define PREFIX_QUERY 'SELECT id FROM a WHERE a = **;'
+back
+use SFADIFF as my_sfadiff_a
+define SEED_FILE {library}/regex/MYSQL/sql_unionselect1.y
+define HANDLER my_query_handler_a
+back
+use HTTPHandler as my_query_handler_b
+define URL http://83.212.105.5/PHPIDS07/
+define BLOCK impact
+back
+use SFADIFF as my_sfadiff_b
+define SEED_FILE {library}/regex/MYSQL/sql_unionselect1.y
+define HANDLER my_query_handler_b
+back
+start my_sfadiff_a my_sfadiff_b
+
