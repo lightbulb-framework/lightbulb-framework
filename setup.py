@@ -6,7 +6,7 @@ from sys import platform
 
 ez_setup.use_setuptools()
 
-PROJECT = 'lightbulb'
+PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
 VERSION = '0.0.1'
@@ -35,7 +35,6 @@ setup(
                  'Programming Language :: Python',
                  'Programming Language :: Python :: 2',
                  'Programming Language :: Python :: 2.7',
-                 'Intended Audience :: Pentesters',
                  'Environment :: Console',
                  ],
 
