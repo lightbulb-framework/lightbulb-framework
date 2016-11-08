@@ -72,7 +72,7 @@ class SFADiff(_SFALearner):
                 cfgtopda = _CfgPDA(self.alphabet)
                 self.mma = cfgtopda.yyparse(findlibrary(self.seed_file), 1)
             elif self.seed_file_type == "FST":
-                self.mma = _DFA()
+                self.mma = _DFA(self.alphabet)
                 self.mma.load(findlibrary(self.seed_file))
                 self.mma.minimize()
 
@@ -85,7 +85,7 @@ class SFADiff(_SFALearner):
                 cfgtopda = _CfgPDA(self.alphabet)
                 self.mmac = cfgtopda.yyparse(findlibrary(self.tests_file), 1)
             elif self.tests_file_type == "FST":
-                self.mmac = _DFA()
+                self.mmac = _DFA(self.alphabet)
                 self.mmac.load(findlibrary(self.tests_file))
                 self.mmac.minimize()
 
@@ -188,7 +188,7 @@ class SFADiff(_SFALearner):
                 # receive IDS model and membership function access
 
                 cross_mm = self.shared_memory[3]
-                crossmm = _DFA()
+                crossmm = _DFA(self.alphabet)
                 crossmm.init_from_acceptor(cross_mm)
                 other = self.shared_memory[5]
                 self.ids_membership_queries = self.shared_memory[2][0]

@@ -51,7 +51,7 @@ class GOFA(_SFALearner):
                 cfgtopda = _CfgPDA(self.alphabet)
                 self.mma = cfgtopda.yyparse(findlibrary(self.seed_file), 1)
             elif self.seed_file_type == "FST":
-                self.mma = _DFA()
+                self.mma = _DFA(self.alphabet)
                 self.mma.load(findlibrary(self.seed_file))
                 self.mma.minimize()
         if self.tests_file is not None and self.tests_file_type is not None:
@@ -63,7 +63,7 @@ class GOFA(_SFALearner):
                 cfgtopda = _CfgPDA(self.alphabet)
                 self.mmac = cfgtopda.yyparse(findlibrary(self.tests_file), 1)
             elif self.tests_file_type == "FST":
-                self.mmac = _DFA()
+                self.mmac = _DFA(self.alphabet)
                 self.mmac.load(findlibrary(self.tests_file))
                 self.mmac.minimize()
 

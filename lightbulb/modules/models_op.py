@@ -43,7 +43,7 @@ class Module():
                 mma = flex_object_m.yyparse(file)
                 mma.minimize()
             elif file_type == "FST":
-                mma = DFA()
+                mma = DFA(self.alphabet)
                 mma.load(file)
                 mma.minimize()
             return mma
