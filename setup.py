@@ -9,7 +9,7 @@ ez_setup.use_setuptools()
 PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 from setuptools import setup, find_packages
 
@@ -43,8 +43,8 @@ setup(
     provides=[],
     install_requires=['cliff','symautomata','sfalearn', 'multiprocessing'],
     dependency_links=[
-        "git+https://github.com/GeorgeArgyros/symautomata#egg=symautomata-0.0.1",
-        "git+https://github.com/GeorgeArgyros/sfalearn#egg=sfalearn-0.0.1"
+        "git+https://github.com/GeorgeArgyros/symautomata#egg=symautomata-0.0.2",
+        "git+https://github.com/GeorgeArgyros/sfalearn#egg=sfalearn-0.0.2"
     ],
     namespace_packages=[],
     packages=[ "lightbulb"]+find_packages(),
