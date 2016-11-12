@@ -1,4 +1,23 @@
-import sys
+import sys, os, imp
+try:
+    imp.find_module('pywrapfst')
+    mymodule_path = "/usr/local/lib"
+    try:
+        sys.path.append(mymodule_path)
+        import pywrapfst
+    except ImportError:
+       if sys.platform == 'win32':
+           os.environ['PATH'] = mymodule_path
+       elif sys.platform == 'darwin':
+           os.environ['DYLD_LIBRARY_PATH'] = mymodule_path
+       else:
+           os.environ['LD_LIBRARY_PATH'] = mymodule_path
+       args = [sys.executable]
+       args.extend(sys.argv)
+       os.execv(sys.executable, args)
+except:
+    pass
+
 from cliff.app import App
 from cliff.commandmanager import CommandManager
 from cliff.complete import CompleteCommand

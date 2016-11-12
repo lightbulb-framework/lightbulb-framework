@@ -8,6 +8,7 @@ from cliff.lister import Lister
 from lightbulb.core.operate import manage, operate_diff, operate_learn
 from lightbulb.core.base import options_as_dictionary, importmodule, create_object
 import inspect
+from sys import platform
 
 CURRENT = None
 HANDLER = None
@@ -392,3 +393,108 @@ class LibrarySync(Command):
     def take_action(self, parsed_args):
         "Updates current library modules from repository"
         pass
+
+
+class Status(Lister):
+    """Checks if requirements are met"""
+
+    log = logging.getLogger(__name__)
+
+    def check_for_MySQLdb(self):
+        try:
+            imp.find_module('MySQLdb')
+            return 'OK'
+        except ImportError:
+            print 'It is recommended to use MySQLdb in order to support' \
+                  ' membership queries in mysql database'
+            install = raw_input(
+                ('* Install MySQLdb now? [y/n] ')
+            )
+            if install == 'y':
+                if platform == "linux" or platform == "linux2":
+                    os.system('sudo apt-get install python-dev libmysqlclient-dev')
+                    os.system('pip install MySQL-python')
+                elif platform == "darwin":
+                    os.system(
+                        '[ ! -f "`which brew`" ] &&  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+                    os.system('brew install mysql-connector-c')
+                    os.system('pip install MySQL-python')
+                elif platform == "win32":
+                    print 'Automated installation is not supported for windows platform'
+                try:
+                    imp.find_module('MySQLdb')
+                    return 'OK'
+                except ImportError:
+                    return  'FAIL'
+            else:
+                return 'FAIL'
+        return 'FAIL'
+
+
+    def check_for_fst(self):
+        try:
+            imp.find_module('fst')
+            return 'OK'
+        except ImportError:
+            try:
+                imp.find_module('pywrapfst')
+                return 'OK'
+            except ImportError:
+                print 'It is recommended to use openfst python bindings (either pyfst or pywrapfst)' \
+                      ' for the DFA implementation. While this is not necessary, using openfst python' \
+                      ' bindings will increase execution speed significally.'
+                install = raw_input(
+                    ('* Install pywrapfst now? [y/n] ')
+                )
+                if install == 'y':
+                    installpywrapfst = """
+                        wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.5.4.tar.gz
+                        tar zxvf openfst-1.5.4.tar.gz
+                        cd openfst-1.5.4
+                        ./configure --enable-python --enable-far
+                        make
+                        sudo make install
+                        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+                        export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
+                        """
+                    os.system(installpywrapfst)
+                    try:
+                        imp.find_module('pywrapfst')
+                        return 'OK'
+                    except ImportError:
+                        return 'FAIL'
+                else:
+                    return 'FAIL'
+        return 'FAIL'
+
+    def take_action(self, parsed_args):
+        """
+        Initiates the currently used module
+        Args:
+            Option values with the prefix "--" (str): The requested option values
+        Returns:
+            tuple: The execution results and stats
+        """
+        stats = []
+        requirements = [['cliff','cliff'],['multiprocessing','multiprocessing'],['FAdo','FAdo'], ['dateutil','python-dateutil'],['symautomata','symautomata'],['sfalearn','sfalearn']]
+        for name in requirements:
+            try:
+                imp.find_module(name[0])
+                stats.append((name[0], 'OK'))
+            except:
+                print 'Module '+name[0]+' was not found in your system.'
+                install = raw_input(
+                    ('* Install '+name[1]+' now? [y/n] ')
+                )
+                if install == 'y':
+                    os.system('pip install '+name[1])
+                    try:
+                        imp.find_module(name[0])
+                    except:
+                        stats.append((name[0], 'FAIL'))
+                else:
+                    stats.append((name[0], 'FAIL'))
+        stats.append(('MySQLdb', self.check_for_MySQLdb()))
+        stats.append(('OpenFST Python Extension', self.check_for_fst()))
+        print 'Requirements Status:\n'
+        return (('Name', 'Status'), (stats))

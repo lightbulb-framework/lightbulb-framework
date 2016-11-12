@@ -9,7 +9,7 @@ ez_setup.use_setuptools()
 PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
-VERSION = '0.0.5'
+VERSION = '0.0.6'
 
 from setuptools import setup, find_packages
 
@@ -64,6 +64,7 @@ setup(
             'info = lightbulb.cli.show:Info',
             'use = lightbulb.cli.use:Use',
             'library = lightbulb.cli.use:Library',
+            'status = lightbulb.cli.use:Status',
         ],
         'cliff.modulehandler': [
             'start =  lightbulb.cli.use:Start',

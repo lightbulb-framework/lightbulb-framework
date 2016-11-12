@@ -31,7 +31,8 @@ Main interface commands:
  modules       | Shows available application modules  
  use \<module\>    | Enters module  
  start \<moduleA\> \<moduleB\>    | Initiate algorithm
- help          | Prints help                           
+ help          | Prints help                  
+ status        | Checks and installs required packages                  
  complete      | Prints bash completion command        
 
 Module commands:
