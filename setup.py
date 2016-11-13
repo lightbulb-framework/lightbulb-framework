@@ -9,7 +9,7 @@ ez_setup.use_setuptools()
 PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
-VERSION = '0.0.6'
+VERSION = '0.0.7'
 
 from setuptools import setup, find_packages
 
@@ -41,11 +41,8 @@ setup(
     platforms=['Any'],
     scripts=[],
     provides=[],
-    install_requires=['cliff','symautomata>=0.0.5','sfalearn>=0.0.5', 'multiprocessing'],
-    dependency_links=[
-        "git+https://github.com/GeorgeArgyros/symautomata#egg=symautomata-0.0.5",
-        "git+https://github.com/GeorgeArgyros/sfalearn#egg=sfalearn-0.0.5"
-    ],
+    install_requires=['stevedore', 'pbr', 'cmd2', 'unicodecsv', 'pyYAML', 'PrettyTable', 'cliff', 'multiprocessing', 'symautomata>=0.0.6', 'sfalearn>=0.0.6'],
+    dependency_links=[],
     namespace_packages=[],
     packages=[ "lightbulb"]+find_packages(),
     package_data={
@@ -88,45 +85,3 @@ setup(
     zip_safe=False,
 )
 
-def check_for_MySQLdb():
-    try:
-        print 'Checking for MySQLdb module:',
-        imp.find_module('MySQLdb')
-        print 'OK'
-    except ImportError:
-        print 'FAIL'
-
-        print 'It is recommended to use MySQLdb in order to support' \
-              ' membership queries in mysql database'
-        install = raw_input(
-            ('* Install MySQLdb now? [y/n] ')
-        )
-        if install == 'y':
-            if platform == "linux" or platform == "linux2":
-                os.system('sudo apt-get install python-dev libmysqlclient-dev')
-                os.system('pip install MySQL-python')
-            elif platform == "darwin":
-                os.system('[ ! -f "`which brew`" ] &&  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
-                os.system('brew install mysql-connector-c')
-                os.system('pip install MySQL-python')
-            elif platform == "win32":
-                print 'Automated installation is not supported for windows platform'
-
-def which(program):
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, fname = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
-
-check_for_MySQLdb()

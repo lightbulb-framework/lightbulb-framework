@@ -406,19 +406,33 @@ class Status(Lister):
             return 'OK'
         except ImportError:
             print 'It is recommended to use MySQLdb in order to support' \
-                  ' membership queries in mysql database'
+                  ' membership queries in mysql databases'
             install = raw_input(
-                ('* Install MySQLdb now? [y/n] ')
+                ('* Install MySQLdb now? (sudo is required) [Y/n] ')
             )
-            if install == 'y':
+            if install == 'n':
+                return 'FAIL'
+            else:
                 if platform == "linux" or platform == "linux2":
                     os.system('sudo apt-get install python-dev libmysqlclient-dev')
-                    os.system('pip install MySQL-python')
+                    mode = raw_input(
+                        ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
+                    )
+                    if mode == 'u':
+                        os.system('pip install MySQL-python --user')
+                    else:
+                        os.system('sudo pip install MySQL-python')
                 elif platform == "darwin":
                     os.system(
                         '[ ! -f "`which brew`" ] &&  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
                     os.system('brew install mysql-connector-c')
-                    os.system('pip install MySQL-python')
+                    mode = raw_input(
+                        ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
+                    )
+                    if mode == 'u':
+                        os.system('pip install MySQL-python --user')
+                    else:
+                        os.system('sudo pip install MySQL-python')
                 elif platform == "win32":
                     print 'Automated installation is not supported for windows platform'
                 try:
@@ -426,8 +440,6 @@ class Status(Lister):
                     return 'OK'
                 except ImportError:
                     return  'FAIL'
-            else:
-                return 'FAIL'
         return 'FAIL'
 
 
@@ -444,9 +456,11 @@ class Status(Lister):
                       ' for the DFA implementation. While this is not necessary, using openfst python' \
                       ' bindings will increase execution speed significally.'
                 install = raw_input(
-                    ('* Install pywrapfst now? [y/n] ')
+                    ('* Install openfst 1.5.4 with pywrapfst now? (sudo is required) [Y/n] ')
                 )
-                if install == 'y':
+                if install == 'n':
+                    return 'FAIL'
+                else:
                     installpywrapfst = """
                         wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.5.4.tar.gz
                         tar zxvf openfst-1.5.4.tar.gz
@@ -463,8 +477,6 @@ class Status(Lister):
                         return 'OK'
                     except ImportError:
                         return 'FAIL'
-                else:
-                    return 'FAIL'
         return 'FAIL'
 
     def take_action(self, parsed_args):
@@ -476,7 +488,7 @@ class Status(Lister):
             tuple: The execution results and stats
         """
         stats = []
-        requirements = [['cliff','cliff'],['multiprocessing','multiprocessing'],['FAdo','FAdo'], ['dateutil','python-dateutil'],['symautomata','symautomata'],['sfalearn','sfalearn']]
+        requirements = [['stevedore', 'stevedore'], ['pbr', 'pbr'], ['cmd2', 'cmd2'], ['unicodecsv', 'unicodecsv'], ['yaml', 'pyYAML'], ['prettytable', 'PrettyTable'], ['cliff','cliff'],['multiprocessing','multiprocessing'],['FAdo','FAdo'], ['dateutil','python-dateutil'],['symautomata','symautomata'],['sfalearn','sfalearn']]
         for name in requirements:
             try:
                 imp.find_module(name[0])
@@ -487,7 +499,13 @@ class Status(Lister):
                     ('* Install '+name[1]+' now? [y/n] ')
                 )
                 if install == 'y':
-                    os.system('pip install '+name[1])
+                    mode = raw_input(
+                        ('* Install Python package '+name[1]+' using sudo or --user? [S/u] ')
+                    )
+                    if mode == 'u':
+                        os.system('pip install '+name[1]+' --user')
+                    else:
+                        os.system('sudo pip install '+name[1])
                     try:
                         imp.find_module(name[0])
                     except:
