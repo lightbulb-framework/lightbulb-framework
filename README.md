@@ -108,4 +108,4 @@ The "lightbulb status" command will guide you to install MySQLdb and OpenFst sup
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+MIT License as described in LICENSE file
