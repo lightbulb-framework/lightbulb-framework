@@ -60,20 +60,43 @@ Library commands:
 
 ## Installation
 
+### Prepare your system
+
+First you have to verify that your system supports python dev, pip and build utilities:
+
+For apt (ubuntu, debian...):
+```bash	
+	sudo apt-get install python-pip
+	sudo apt-get install python-dev
+	sudo apt-get install build-essential
+```
+
+For yum (centos, redhat, fedora...):
+```bash
+	sudo yum install python-pip
+	sudo yum install python-devel
+	sudo yum groupinstall 'Development Tools'
+```
+
+### Install Lightbulb
+
 In order to use the application without complete package installation:
 
 ```bash
+git clone https://github.com/lightbulb-framework/lightbulb-framework
+cd lightbulb-framework
 make
-pip install -r requirements.txt
+lightbulb status
 ```
 
 In order to perform complete package installation You can also install it from pip repository:
 
 ```bash
 pip install lightbulb-framework
-lightbulb
+lightbulb status
 ```
 
+The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. 
 
 ## Contributors
 

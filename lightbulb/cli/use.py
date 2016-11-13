@@ -488,7 +488,7 @@ class Status(Lister):
             tuple: The execution results and stats
         """
         stats = []
-        requirements = [['stevedore', 'stevedore'], ['pbr', 'pbr'], ['cmd2', 'cmd2'], ['unicodecsv', 'unicodecsv'], ['yaml', 'pyYAML'], ['prettytable', 'PrettyTable'], ['cliff','cliff'],['multiprocessing','multiprocessing'],['FAdo','FAdo'], ['dateutil','python-dateutil'],['symautomata','symautomata'],['sfalearn','sfalearn']]
+        requirements = [['six', 'six'], ['stevedore', 'stevedore'], ['pbr', 'pbr'], ['cmd2', 'cmd2'], ['unicodecsv', 'unicodecsv'], ['yaml', 'pyYAML'], ['prettytable', 'PrettyTable'], ['cliff','cliff'],['multiprocessing','multiprocessing'],['FAdo','FAdo'], ['dateutil','python-dateutil'],['symautomata','symautomata'],['sfalearn','sfalearn']]
         for name in requirements:
             try:
                 imp.find_module(name[0])

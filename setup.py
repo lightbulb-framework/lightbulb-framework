@@ -9,7 +9,7 @@ ez_setup.use_setuptools()
 PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
-VERSION = '0.0.7'
+VERSION = '0.0.8'
 
 from setuptools import setup, find_packages
 
@@ -41,7 +41,7 @@ setup(
     platforms=['Any'],
     scripts=[],
     provides=[],
-    install_requires=['stevedore', 'pbr', 'cmd2', 'unicodecsv', 'pyYAML', 'PrettyTable', 'cliff', 'multiprocessing', 'symautomata>=0.0.6', 'sfalearn>=0.0.6'],
+    install_requires=['six>=1.10', 'stevedore', 'pbr', 'cmd2', 'unicodecsv', 'pyYAML', 'PrettyTable', 'cliff', 'multiprocessing', 'symautomata>=0.0.6', 'sfalearn>=0.0.6'],
     dependency_links=[],
     namespace_packages=[],
     packages=[ "lightbulb"]+find_packages(),
