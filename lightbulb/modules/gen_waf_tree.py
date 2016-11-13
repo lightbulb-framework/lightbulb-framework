@@ -95,8 +95,8 @@ class Module():
         Returns:
             str,str: Two file paths, which are the selected rulesets
         """
-        waf_a_rules_folder = self.wafs[waf_key_a]["data"]["RULE"]
-        waf_b_rules_folder = self.wafs[waf_key_b]["data"]["RULE"]
+        waf_a_rules_folder = findlibrary(self.wafs[waf_key_a]["data"]["RULE"])
+        waf_b_rules_folder = findlibrary(self.wafs[waf_key_b]["data"]["RULE"])
         if os.path.isfile(waf_a_rules_folder):
             selected_rule_a = waf_a_rules_folder
         else:
