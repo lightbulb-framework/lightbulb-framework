@@ -17,6 +17,11 @@ The framework consists of two main algorithms:
 
 Web Applications Firewalls (WAFs) are fundamental building blocks of modern application security. For example, the PCI standard for organizations handling credit card transactions dictates that any application facing the internet should be either protected by a WAF or successfully pass a code review process. Nevertheless, despite their popularity and importance, auditing web application firewalls remains a challenging and complex task. Finding attacks that bypass the firewall usually requires expert domain knowledge for a specific vulnerability class. Thus, penetration testers not armed with this knowledge are left with publicly available lists of attack strings, like the XSS Cheat Sheet, which are usually insufficient for thoroughly evaluating the security of a WAF product.
 
+## BlackHat Europe 2016 Presentation
+
+In this presentation we introduce a novel, efficient, approach for bypassing WAFs using automata learning algorithms. We show that automata learning algorithms can be used to obtain useful models of WAFs. Given such a model, we show how to construct, either manually or automatically, a grammar describing the set of possible attacks which are then tested against the obtained model for the firewall. Moreover, if our system fails to find an attack, a regular expression model of the firewall is generated for further analysis. Using this technique we found over 10 previously unknown vulnerabilities in popular WAFs such as Mod-Security, PHPIDS and Expose allowing us to mount SQL Injection and XSS attacks bypassing the firewalls. Finally, we present LightBulb, an open source python framework for auditing web applications firewalls using the techniques described above. In the release we include the set of grammars used to find the vulnerabilities presented.
+
+[![BHEU16 Presentation](http://image.slidesharecdn.com/anotherbrick-161109104820/85/another-brick-off-the-wall-deconstructing-web-application-firewalls-using-automata-learning-1-320.jpg)](http://www.slideshare.net/einstais/another-brick-off-the-wall-deconstructing-web-application-firewalls-using-automata-learning)
 
 ## Commands Usage
 
