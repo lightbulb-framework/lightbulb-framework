@@ -98,6 +98,9 @@ lightbulb status
 
 The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. 
 
+[![LightBulb Installation on Debian Linux](https://j.gifs.com/O75xWL.gif)](https://www.youtube.com/watch?v=jjw32Jc744g)
+
+
 ## Contributors
 
 * George Argyros
