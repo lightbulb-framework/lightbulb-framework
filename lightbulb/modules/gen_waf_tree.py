@@ -2,6 +2,8 @@ from lightbulb.core.base import options_as_dictionary
 from lightbulb.core.utils.httphandler import HTTPHandler
 from lightbulb.core.utils.common import findlibrary
 from collections import OrderedDict
+from lightbulb.core.modules.sfadiff import SFADiff
+from symautomata.alphabet import createalphabet
 from lightbulb.core.operate import operate_diff
 import json
 import os
