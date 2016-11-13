@@ -66,7 +66,7 @@ class Module():
         filepaths = []
         for basename in os.listdir(dirname):
             filename = os.path.join(dirname, basename)
-            if os.path.isfile(filename) and filename not in rules_already_used and not filename.endswith(".py"):
+            if os.path.isfile(filename) and filename not in rules_already_used and not filename.endswith(".py") and not filename.endswith(".pyc"):
                 filepaths.append(filename)
 
         # Re-populate list with filename, size tuples

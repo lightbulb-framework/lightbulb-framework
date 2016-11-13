@@ -62,10 +62,11 @@ Library commands:
 
 ### Prepare your system
 
-First you have to verify that your system supports python dev, pip and build utilities:
+First you have to verify that your system supports flex, python dev, pip and build utilities:
 
 For apt (ubuntu, debian...):
 ```bash	
+    sudo apt-get install flex
 	sudo apt-get install python-pip
 	sudo apt-get install python-dev
 	sudo apt-get install build-essential
