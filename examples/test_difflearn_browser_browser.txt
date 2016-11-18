@@ -2,24 +2,22 @@ use BROWSERHandler as my_query_handler_a
 define WSPORT 8001
 define WBPORT 8081
 define BROWSERPARSE True
-define DELAY 50
+define DELAY 150
 define HOST localhost
 back
 use SFADIFF as my_sfadiff_a
 define SEED_FILE {library}/regex/BROWSER/html_img_attribute.y
 define HANDLER my_query_handler_a
-define DFA1_MINUS_DFA2 True
 back
 use BROWSERHandler as my_query_handler_b
 define WSPORT 8002
 define WBPORT 8082
 define BROWSERPARSE True
-define DELAY 50
+define DELAY 150
 define HOST localhost
 back
 use SFADIFF as my_sfadiff_b
 define SEED_FILE {library}/regex/BROWSER/html_img_attribute.y
 define HANDLER my_query_handler_b
-define DFA1_MINUS_DFA2 True
 back
 start my_sfadiff_a my_sfadiff_b
