@@ -408,13 +408,14 @@ class Status(Lister):
             print 'It is recommended to use MySQLdb in order to support' \
                   ' membership queries in mysql databases'
             install = raw_input(
-                ('* Install MySQLdb now? (sudo is required) [Y/n] ')
+                ('* Install MySQLdb now? (sudo may be required) [Y/n] ')
             )
             if install == 'n':
                 return 'FAIL'
             else:
                 if platform == "linux" or platform == "linux2":
-                    os.system('sudo apt-get install python-dev libmysqlclient-dev')
+                    print 'sudo apt-get install libmysqlclient-dev'
+                    os.system('sudo apt-get install libmysqlclient-dev')
                     success = False
                     if hasattr(sys, 'real_prefix'):
                         os.system('pip install MySQL-python')
@@ -474,21 +475,29 @@ class Status(Lister):
                       ' for the DFA implementation. While this is not necessary, using openfst python' \
                       ' bindings will increase execution speed significally.'
                 install = raw_input(
-                    ('* Install openfst 1.5.4 with pywrapfst now? (sudo is required) [Y/n] ')
+                    ('* Install openfst 1.5.4 with pywrapfst now? (sudo may be required) [Y/n] ')
                 )
                 if install == 'n':
                     return 'FAIL'
                 else:
-                    installpywrapfst = """
-                        wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.5.4.tar.gz
-                        tar zxvf openfst-1.5.4.tar.gz
-                        cd openfst-1.5.4
-                        ./configure --enable-python --enable-far
-                        make
-                        sudo make install
-                        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-                        export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
-                        """
+                    if hasattr(sys, 'real_prefix'):
+                        installpywrapfst = """
+                            wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.5.4.tar.gz
+                            tar zxvf openfst-1.5.4.tar.gz
+                            cd openfst-1.5.4
+                            ./configure --enable-python --enable-far --prefix """+getattr(sys, 'prefix')+"""/local/ && make clean && make install
+                            """
+                    else:
+                        installpywrapfst = """
+                            wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.5.4.tar.gz
+                            tar zxvf openfst-1.5.4.tar.gz
+                            cd openfst-1.5.4
+                            ./configure --enable-python --enable-far
+                            make
+                            sudo make install
+                            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+                            export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
+                            """
                     os.system(installpywrapfst)
                     try:
                         imp.find_module('pywrapfst')
