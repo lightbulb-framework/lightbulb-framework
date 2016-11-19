@@ -102,10 +102,23 @@ pip install lightbulb-framework
 lightbulb status
 ```
 
-The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. 
+If you want to use virtualenv:
+
+```bash
+pip install virtualenv
+virtualenv env
+source env/bin/activate
+pip install lightbulb-framework
+lightbulb status
+```
+
+The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. If you use virtualenv in linux, the "sudo" command will be required only for the installation of libmysqlclient-dev package.
 
 [![LightBulb Installation on Debian Linux](https://j.gifs.com/O75xWL.gif)](https://www.youtube.com/watch?v=jjw32Jc744g)
 
+## Examples
+
+Check out the [Wiki page](https://github.com/lightbulb-framework/lightbulb-framework/wiki) for usage examples.
 
 ## Contributors
 
