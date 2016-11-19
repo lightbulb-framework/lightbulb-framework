@@ -415,24 +415,42 @@ class Status(Lister):
             else:
                 if platform == "linux" or platform == "linux2":
                     os.system('sudo apt-get install python-dev libmysqlclient-dev')
-                    mode = raw_input(
-                        ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
-                    )
-                    if mode == 'u':
-                        os.system('pip install MySQL-python --user')
-                    else:
-                        os.system('sudo pip install MySQL-python')
+                    success = False
+                    if hasattr(sys, 'real_prefix'):
+                        os.system('pip install MySQL-python')
+                        try:
+                            imp.find_module('MySQLdb')
+                            success = True
+                        except:
+                            success = False
+                    if not success:
+                        mode = raw_input(
+                            ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
+                        )
+                        if mode == 'u':
+                            os.system('pip install MySQL-python --user')
+                        else:
+                            os.system('sudo pip install MySQL-python')
                 elif platform == "darwin":
                     os.system(
                         '[ ! -f "`which brew`" ] &&  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
                     os.system('brew install mysql-connector-c')
-                    mode = raw_input(
-                        ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
-                    )
-                    if mode == 'u':
-                        os.system('pip install MySQL-python --user')
-                    else:
-                        os.system('sudo pip install MySQL-python')
+                    success = False
+                    if hasattr(sys, 'real_prefix'):
+                        os.system('pip install MySQL-python')
+                        try:
+                            imp.find_module('MySQLdb')
+                            success = True
+                        except:
+                            success = False
+                    if not success:
+                        mode = raw_input(
+                            ('* Install Python package MySQLdb using sudo or --user? [S/u] ')
+                        )
+                        if mode == 'u':
+                            os.system('pip install MySQL-python --user')
+                        else:
+                            os.system('sudo pip install MySQL-python')
                 elif platform == "win32":
                     print 'Automated installation is not supported for windows platform'
                 try:
@@ -499,17 +517,28 @@ class Status(Lister):
                     ('* Install '+name[1]+' now? [y/n] ')
                 )
                 if install == 'y':
-                    mode = raw_input(
-                        ('* Install Python package '+name[1]+' using sudo or --user? [S/u] ')
-                    )
-                    if mode == 'u':
-                        os.system('pip install '+name[1]+' --user')
-                    else:
-                        os.system('sudo pip install '+name[1])
-                    try:
-                        imp.find_module(name[0])
-                    except:
-                        stats.append((name[0], 'FAIL'))
+                    success = False
+                    if hasattr(sys, 'real_prefix'):
+                        os.system('pip install ' + name[1])
+                        try:
+                            imp.find_module(name[0])
+                            stats.append((name[0], 'OK'))
+                            success = True
+                        except:
+                            success = False
+                    if not success:
+                        mode = raw_input(
+                            ('* Install Python package '+name[1]+' using sudo or --user? [S/u] ')
+                        )
+                        if mode == 'u':
+                            os.system('pip install '+name[1]+' --user')
+                        else:
+                            os.system('sudo pip install '+name[1])
+                        try:
+                            imp.find_module(name[0])
+                            stats.append((name[0], 'OK'))
+                        except:
+                            stats.append((name[0], 'FAIL'))
                 else:
                     stats.append((name[0], 'FAIL'))
         stats.append(('MySQLdb', self.check_for_MySQLdb()))
