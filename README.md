@@ -69,7 +69,7 @@ Library commands:
 
 First you have to verify that your system supports flex, python dev, pip and build utilities:
 
-For apt (ubuntu, debian...):
+For apt platforms (ubuntu, debian...):
 ```bash	
     sudo apt-get install flex
 	sudo apt-get install python-pip
@@ -77,11 +77,23 @@ For apt (ubuntu, debian...):
 	sudo apt-get install build-essential
 ```
 
-For yum (centos, redhat, fedora...):
+(Optional for apt) If you want to add support for MySQL testing: 
+```bash	
+    sudo apt-get install libmysqlclient-dev
+```
+
+For yum platforms (centos, redhat, fedora...) with already installed the extra packages repo (epel-release):
 ```bash
-	sudo yum install python-pip
-	sudo yum install python-devel
-	sudo yum groupinstall 'Development Tools'
+	sudo yum install -y python-pip
+	sudo yum install -y python-devel
+	sudo yum install -y wget
+	sudo yum groupinstall -y 'Development Tools'
+```
+
+(Optional for yum) If you want to add support for MySQL testing: 
+```bash
+	sudo yum install -y mysql-devel 
+	sudo yum install -y MySQL-python
 ```
 
 ### Install Lightbulb
@@ -95,9 +107,10 @@ make
 lightbulb status
 ```
 
-In order to perform complete package installation You can also install it from pip repository:
+In order to perform complete package installation. You can also install it from pip repository. This requires first to install the latest setuptools version:
 
 ```bash
+pip install setuptools --upgrade
 pip install lightbulb-framework
 lightbulb status
 ```
@@ -114,7 +127,14 @@ lightbulb status
 
 The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. If you use virtualenv in linux, the "sudo" command will be required only for the installation of libmysqlclient-dev package.
 
+It is also possible to use a docker instance:
+
+```bash
+docker pull lightbulb/lightbulb-framework
+```
+
 [![LightBulb Installation on Debian Linux](https://j.gifs.com/O75xWL.gif)](https://www.youtube.com/watch?v=jjw32Jc744g)
+
 
 ## Examples
 

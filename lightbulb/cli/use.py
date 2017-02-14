@@ -9,6 +9,7 @@ from lightbulb.core.operate import manage, operate_diff, operate_learn
 from lightbulb.core.base import options_as_dictionary, importmodule, create_object
 import inspect
 from sys import platform
+import platform as distplatform
 
 CURRENT = None
 HANDLER = None
@@ -414,8 +415,16 @@ class Status(Lister):
                 return 'FAIL'
             else:
                 if platform == "linux" or platform == "linux2":
-                    print 'sudo apt-get install libmysqlclient-dev'
-                    os.system('sudo apt-get install libmysqlclient-dev')
+                    yumplatforms = ['redhat', 'centos', 'fedora']
+                    currentdistro = distplatform.dist()[0]
+                    if currentdistro in yumplatforms:
+                        print 'sudo yum install -y mysql-devel'
+                        os.system('sudo yum install -y mysql-devel')
+                        print 'sudo yum install -y MySQL-python'
+                        os.system('sudo yum install -y MySQL-python')
+                    else:
+                        print 'sudo apt-get install libmysqlclient-dev'
+                        os.system('sudo apt-get install libmysqlclient-dev')
                     success = False
                     if hasattr(sys, 'real_prefix'):
                         os.system('pip install MySQL-python')

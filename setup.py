@@ -9,7 +9,7 @@ ez_setup.use_setuptools()
 PROJECT = 'lightbulb-framework'
 
 # Change docs/sphinx/conf.py too!
-VERSION = '0.0.13'
+VERSION = '0.0.14'
 
 from setuptools import setup, find_packages
 
