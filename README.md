@@ -144,6 +144,9 @@ Check out the [Wiki page](https://github.com/lightbulb-framework/lightbulb-frame
 
 * George Argyros
 * Ioannis Stais
+* Suman Jana
+* Angelos D. Keromytis
+* Aggelos Kiayias
 
 ## License
 
