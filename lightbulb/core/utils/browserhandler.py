@@ -1,5 +1,4 @@
 import sys
-from multiprocessing import Process
 from lightbulb.core.utils.ipc import  Pipe
 import base64
 from lightbulb.core.utils.webserverhandler import WebServerHandler
@@ -104,6 +103,7 @@ class BrowserHandler:
                 child_conn_a,
                 self.wsport,
             ))
+        websocket.setDaemon(True)
         websocket.start()
         print 'OK'
         print 'Starting HTTP Server at port ' + repr(self.wbport) + ': ',
@@ -116,6 +116,7 @@ class BrowserHandler:
                 self.host,
                 self.wsport,
             ))
+        webbrowser.setDaemon(True)
         webbrowser.start()
         print 'OK'
         print 'Please connect your Browser at http://'+self.host + ':' + repr(self.wbport)

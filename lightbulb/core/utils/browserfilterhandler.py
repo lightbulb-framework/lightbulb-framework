@@ -1,5 +1,4 @@
 import sys
-from multiprocessing import Process
 from lightbulb.core.utils.ipc import  Pipe
 import base64
 from lightbulb.core.utils.webserveriframehandler import WebServerIframeHandler
@@ -99,6 +98,7 @@ class BrowserFilterHandler:
                 child_conn_a,
                 self.wsport,
             ))
+        websocket.setDaemon(True)
         websocket.start()
         print 'OK'
         print 'Starting HTTP Server at port ' + repr(self.wbport) + ': ',
@@ -111,6 +111,7 @@ class BrowserFilterHandler:
                 self.host,
                 self.wsport,
             ))
+        webbrowser.setDaemon(True)
         webbrowser.start()
         print 'OK'
         print 'Please connect your Browser at http://'+self.host + ':' + repr(self.wbport)
@@ -144,7 +145,7 @@ class BrowserFilterHandler:
 
     def query(self, string):
 
-        self.server[0].send(["serverrequest", base64.b64encode(string)])
+        self.server[0].send(["serverrequest", ''.join(x.encode('hex') for x in string)])
         updates = self.server[0].recv()
         if updates[0] == "browserresponse" \
                 and updates[1] == self.return_code_1:
