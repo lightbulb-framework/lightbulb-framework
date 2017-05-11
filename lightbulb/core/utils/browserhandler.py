@@ -25,37 +25,24 @@ META = {
 
 
 
-def serve(server, parentconn, conn, port):
+def serve(server):
     """
     Initializes the websocket server
     Args:
         server (SimpleWebSocketServer): The web socket server
-        parentconn (Pipe): A communication channel with SFA Diff
-        conn (Pipe): A communication channel with the browser handler
-        port (int): The port number to be used
     Returns:
         None
     """
-
-    server.websocketclass.parentconn = parentconn
-    server.websocketclass.conn = conn
-    server.websocketclass.myport = port
     server.serveforever()
 
-def serve_html(server, delay, host, port):
+def serve_html(server):
     """
     Initializes the web browser server
     Args:
         server (SimpleWebServer): The web browser server
-        delay (int): Time to wait for an object to load
-        port (int): The web socket port number to be used
     Returns:
         None
     """
-
-    server.websocketclass.delay = delay
-    server.websocketclass.myport = port
-    server.websocketclass.myhost = host
     server.serveforever()
 
 
@@ -93,28 +80,22 @@ class BrowserHandler:
 
         parent_conn_a, child_conn_a = Pipe()
         websocketserver = SimpleWebSocketServer(
-            self.host, self.wsport, SocketHandler)
+            self.host, self.wsport, SocketHandler, parent_conn_a, child_conn_a, self.wsport)
         print 'Starting WebSocket Server at port ' + repr(self.wsport) + ': ',
         websocket = Thread(
             target=serve,
             args=(
                 websocketserver,
-                parent_conn_a,
-                child_conn_a,
-                self.wsport,
             ))
         websocket.setDaemon(True)
         websocket.start()
         print 'OK'
         print 'Starting HTTP Server at port ' + repr(self.wbport) + ': ',
-        webbrowserserver = SimpleWebServer(self.host, self.wbport, WebServerHandler)
+        webbrowserserver = SimpleWebServer(self.host, self.wbport, WebServerHandler, self.delay, self.wsport)
         webbrowser = Thread(
             target=serve_html,
             args=(
                 webbrowserserver,
-                self.delay,
-                self.host,
-                self.wsport,
             ))
         webbrowser.setDaemon(True)
         webbrowser.start()

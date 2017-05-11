@@ -4,9 +4,6 @@ import SimpleHTTPServer
 
 class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     """This class handles browser content"""
-    delay = 50
-    myport = 0
-    myhost = "localhost"
 
     def log_message(self, format, *args):
         # sys.stderr.write("%input_string - - [%input_string] %input_string\n" %
@@ -60,7 +57,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
               };
               function doConnect()
               {
-                websocket = new WebSocket("ws://""" + self.myhost + """:""" + `self.myport` + """/");
+                websocket = new WebSocket("ws://""" + self.server.myhost + """:""" + `self.server.myport` + """/");
                 websocket.onopen = function(evt) { websocket.send("INIT"); };
                 websocket.onmessage = function(evt) { onMessage(evt) };
               }
@@ -111,7 +108,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                             console.log(x);websocket.send(x);
                         } else {
                              y =  y+1;
-                            setTimeout( wait, """ + `self.delay` + """ );
+                            setTimeout( wait, """ + `self.server.delay` + """ );
                         }
                     })();
                   },
