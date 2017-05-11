@@ -1,9 +1,8 @@
 """This module is used for CLI module initialization and execution"""
 import os
 import inspect
-from multiprocessing import  Pipe
+from lightbulb.core.utils.ipc import  Pipe
 from threading import Thread
-import signal
 import imp
 import sys
 
@@ -29,23 +28,6 @@ SHARED1 = None
 SHARED2 = None
 TARGET_A = None
 TARGET_B = None
-
-def signal_handler(signal, frame):
-    """
-    Terminate servers on SIGINT
-    Args:
-        signal (int): The requested signal.
-        frame (func): The signal handler
-    Returns:
-        None
-    """
-    if TARGET_A is not None:
-        if TARGET_A.isAlive():
-            TARGET_A.join(0)
-    if TARGET_B is not None:
-        if TARGET_B.isAlive():
-            TARGET_B.join(0)
-    sys.exit(0)
 
 
 
@@ -86,7 +68,6 @@ def operate_diff_part(module, configuration, shared_memory, cross):
 
 def operate_diff(module_class_A, configuration_A, module_class_B, configuration_B):
     global OBJECTA, OBJECTB, SHARED1, SHARED2, TARGET_A, TARGET_B
-    signal.signal(signal.SIGINT, signal_handler)
     target_a_pipe, target_b_pipe = Pipe()
     result = []
     shared_memory = [target_a_pipe, target_b_pipe, OBJECTA, OBJECTB, SHARED1, SHARED2, result]

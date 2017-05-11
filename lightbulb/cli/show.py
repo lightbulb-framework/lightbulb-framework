@@ -165,6 +165,12 @@ class LibraryModules(Lister):
         path = imp.find_module('lightbulb')[1]+'/data/' + folder
         if folder == "my_saved_models":
             path = expanduser("~")+"/.LightBulb/models/"
+        if folder == "my_saved_regex":
+            path = expanduser("~")+"/.LightBulb/regex/"
+        if folder == "my_saved_trees":
+            path = expanduser("~")+"/.LightBulb/trees/"
+        if folder == "my_saved_grammars":
+            path = expanduser("~")+"/.LightBulb/grammars/"
         data = []
         # First check if module is in CORE modules
         sys.path.insert(1, os.path.join(sys.path[0], path))
@@ -176,6 +182,9 @@ class LibraryModules(Lister):
             data.append((module_name, meta['description'], meta['type']))
         if folder == ".":
             data.append(("my_saved_models", "My saved models", "Folder"))
+            data.append(("my_saved_regex", "My saved regex", "Folder"))
+            data.append(("my_saved_trees", "My saved trees", "Folder"))
+            data.append(("my_saved_grammars", "My saved grammars", "Folder"))
 
         return (('Name', 'Value', 'Type'), (data))
 
@@ -214,6 +223,12 @@ class LibraryInfo(Lister):
         path = imp.find_module('lightbulb')[1]+'/data/'+ folder
         if folder == "my_saved_models":
             path = expanduser("~")+"/.LightBulb/models/"
+        if folder == "my_saved_regex":
+            path = expanduser("~")+"/.LightBulb/regex/"
+        if folder == "my_saved_trees":
+            path = expanduser("~")+"/.LightBulb/trees/"
+        if folder == "my_saved_grammars":
+            path = expanduser("~")+"/.LightBulb/grammars/"
         # First check if module is in CORE modules
         sys.path.insert(1, os.path.join(sys.path[0], path))
         meta = importmodule(module_name).META
@@ -266,21 +281,28 @@ class LibraryCat(Lister):
         component_splitted = component.split('/')
         module_name = component_splitted[-1]
         folder = "/".join(component_splitted[:-1])
-        if "my_saved_models" in component_splitted:
-            content =  'Cat operation is not supported for my_saved_models'
-            return  (('Name', 'Value'), ([(module_name, content)]))
+        path = imp.find_module('lightbulb')[1]+'/data/'+ folder
+        if folder == "my_saved_models":
+            path = expanduser("~")+"/.LightBulb/models/"
+        if folder == "my_saved_regex":
+            path = expanduser("~")+"/.LightBulb/regex/"
+        if folder == "my_saved_trees":
+            path = expanduser("~")+"/.LightBulb/trees/"
+        if folder == "my_saved_grammars":
+            path = expanduser("~")+"/.LightBulb/grammars/"
+
         # First check if module is in CORE modules
-        sys.path.insert(1, os.path.join(sys.path[0], 'lightbulb/data/' + folder))
+        sys.path.insert(1, os.path.join(sys.path[0], path))
         meta = importmodule(module_name).META
 
         self.app.stdout.write('\n\nComponent ' + module_name + ' Information:\n')
 
         content = ""
         if meta['type'] == 'Grammar' or meta['type'] == 'Regex':
-            with open(imp.find_module('lightbulb')[1]+'/data/' + component + '.y') as grammaregex_file:
+            with open(path +"/"+ module_name + '.y') as grammaregex_file:
                 content = grammaregex_file.read()
-        elif meta['type'] == 'Configuration':
-            with open(imp.find_module('lightbulb')[1]+'/data/' + component + '.json') as conf_file:
+        elif meta['type'] == 'Configuration' or meta['type'] == 'Tree':
+            with open(path +"/"+ module_name + '.json') as conf_file:
                 content = conf_file.read()
         else:
             content = 'This is a folder and the command cannot be used.'

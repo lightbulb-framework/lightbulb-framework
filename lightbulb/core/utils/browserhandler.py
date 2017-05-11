@@ -1,12 +1,13 @@
-import signal
 import sys
-from multiprocessing import Process, Pipe
+from multiprocessing import Process
+from lightbulb.core.utils.ipc import  Pipe
 import base64
 from lightbulb.core.utils.webserverhandler import WebServerHandler
 from lightbulb.core.utils.SimpleWebServer import SimpleWebServer
 from lightbulb.core.utils.SimpleWebSocketServer import SimpleWebSocketServer
 from lightbulb.core.utils.sockethandler import SocketHandler
 from lightbulb.core.utils.common import accept_bool
+from threading import Thread
 
 META = {
     'author': 'George Argyros, Ioannis Stais',
@@ -25,19 +26,6 @@ META = {
 
 
 
-
-def signal_handler(signal, frame):
-    """
-    Terminate servers on SIGINT
-    Args:
-        signal (int): The requested signal.
-        frame (func): The signal handler
-    Returns:
-        None
-    """
-
-    sys.exit(0)
-
 def serve(server, parentconn, conn, port):
     """
     Initializes the websocket server
@@ -49,7 +37,7 @@ def serve(server, parentconn, conn, port):
     Returns:
         None
     """
-    signal.signal(signal.SIGINT, signal_handler)
+
     server.websocketclass.parentconn = parentconn
     server.websocketclass.conn = conn
     server.websocketclass.myport = port
@@ -65,7 +53,7 @@ def serve_html(server, delay, host, port):
     Returns:
         None
     """
-    signal.signal(signal.SIGINT, signal_handler)
+
     server.websocketclass.delay = delay
     server.websocketclass.myport = port
     server.websocketclass.myhost = host
@@ -85,6 +73,7 @@ class BrowserHandler:
                                     If set to false, then query is true
                                     if browser does not parse JavaScript.
         """
+
         self.setup(configuration)
         self.wsport = int(self.wsport)
         self.wbport = int(self.wbport)
@@ -107,7 +96,7 @@ class BrowserHandler:
         websocketserver = SimpleWebSocketServer(
             self.host, self.wsport, SocketHandler)
         print 'Starting WebSocket Server at port ' + repr(self.wsport) + ': ',
-        websocket = Process(
+        websocket = Thread(
             target=serve,
             args=(
                 websocketserver,
@@ -119,7 +108,7 @@ class BrowserHandler:
         print 'OK'
         print 'Starting HTTP Server at port ' + repr(self.wbport) + ': ',
         webbrowserserver = SimpleWebServer(self.host, self.wbport, WebServerHandler)
-        webbrowser = Process(
+        webbrowser = Thread(
             target=serve_html,
             args=(
                 webbrowserserver,
@@ -160,7 +149,7 @@ class BrowserHandler:
 
     def query(self, string):
 
-        self.server[0].send(["serverrequest", base64.b64encode(string)])
+        self.server[0].send(["serverrequest", ''.join(x.encode('hex') for x in string)])
         updates = self.server[0].recv()
         if updates[0] == "browserresponse" \
                 and updates[1] == self.return_code_1:
@@ -171,9 +160,19 @@ class BrowserHandler:
         if updates[0] == "browserstatus" and updates[1] == 0:
             print 'Browser disconnected. Awaiting to connect again..'
             while True:
+                print 'Verifying Web Socket connection:',
                 updates = self.server[0].recv()
                 if updates[0] == "browserstatus" and updates[1] == 1:
-                    return self.query(self.server, string)
+                    print 'OK'
+                else:
+                    print 'FAIL'
+                print 'Awaiting initialization command:',
+                updates = self.server[0].recv()
+                if updates[0] == "browserresponse" and updates[1] == "INIT":
+                    print 'OK'
+                else:
+                    print 'FAIL'
+                return self.query(string)
 
     def __del__(self):
         print 'del'
@@ -181,8 +180,5 @@ class BrowserHandler:
             self.websocketserver.close()
         if self.webbrowserserver is not None:
             self.webbrowserserver.close()
-        if self.websocket is not None:
-            self.websocket.terminate()
-        if self.webbrowser is not None:
-            self.webbrowser.terminate()
+   
 

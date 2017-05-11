@@ -29,10 +29,12 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                  return true;
               };
 
-              function b64DecodeUnicode(str) {
-                return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-                return '%' + c.charCodeAt(0).toString(16);
-                }).join(''));
+              function hexdecoder(hex) {
+                var str = '';
+                for (var i = 0; i < hex.length; i += 2){
+                  str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                }
+                return str;
               }
                var waitUntil = function (fn, condition, interval) {
                   interval = interval || 100;
@@ -69,12 +71,12 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if (evt.data instanceof Blob){
                   var reader = new FileReader();
                   reader.addEventListener("loadend", function() {
-                      text=b64DecodeUnicode(reader.result); 
+                      text=hexdecoder(reader.result); 
                       writeToScreen(text);
                   });
                   reader.readAsText(evt.data);
                 }else{
-                  text=b64DecodeUnicode(reader.result); 
+                  text=hexdecoder(reader.result); 
                   writeToScreen(text);
                 }
               }
