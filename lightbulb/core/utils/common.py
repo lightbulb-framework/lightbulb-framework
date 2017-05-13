@@ -30,6 +30,7 @@ def findlibrary(path):
     path = re.sub('.*my_saved_trees/', expanduser("~") + "/.LightBulb/trees/", path)
     path = re.sub('.*my_saved_grammars/', expanduser("~") + "/.LightBulb/grammars/", path)
     path = path.replace('{library}', imp.find_module('lightbulb')[1]+"/data/")
+    return path
 
 def save_model(save, model):
     if not isinstance(save, basestring):
