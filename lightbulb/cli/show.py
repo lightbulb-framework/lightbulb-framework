@@ -162,6 +162,11 @@ class LibraryModules(Lister):
             tuple: Available library modules
         """
         folder = parsed_args.folder
+        if len(folder) > 0 and folder[0] == '/':
+            folder = folder[1:]
+        if len(folder) > 1 and folder[0:2] == './':
+            folder = folder[2:]
+
         path = imp.find_module('lightbulb')[1]+'/data/' + folder
         if folder == "my_saved_models":
             path = expanduser("~")+"/.LightBulb/models/"
@@ -218,6 +223,9 @@ class LibraryInfo(Lister):
         component = parsed_args.component
 
         component_splitted = component.split('/')
+        for component in component_splitted:
+            if component == '.':
+                component_splitted.remove(component)
         module_name = component_splitted[-1]
         folder = "/".join(component_splitted[:-1])
         path = imp.find_module('lightbulb')[1]+'/data/'+ folder
@@ -280,6 +288,9 @@ class LibraryCat(Lister):
 
         component_splitted = component.split('/')
         module_name = component_splitted[-1]
+        for component in component_splitted:
+            if component == '.':
+                component_splitted.remove(component)
         folder = "/".join(component_splitted[:-1])
         path = imp.find_module('lightbulb')[1]+'/data/'+ folder
         if folder == "my_saved_models":
