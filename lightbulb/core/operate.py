@@ -22,12 +22,6 @@ META = {
 
 sys.path.insert(1, imp.find_module('lightbulb')[1]+'/modules')
 sys.path.insert(1, imp.find_module('lightbulb')[1]+'/core/utils/')
-OBJECTA = None
-OBJECTB = None
-SHARED1 = None
-SHARED2 = None
-TARGET_A = None
-TARGET_B = None
 
 
 
@@ -47,7 +41,7 @@ def operate_learn(module, configuration):
 
 def operate_diff_part(module, configuration, shared_memory, cross):
     """
-    Initiates the execution of a module in parallel
+    Initiates the execution of a module
     Args:
         module (class): The module class to be initiated
         configuration (dict): The module options
@@ -67,28 +61,43 @@ def operate_diff_part(module, configuration, shared_memory, cross):
         initmodule.learn()
 
 def operate_diff(module_class_A, configuration_A, module_class_B, configuration_B):
-    global OBJECTA, OBJECTB, SHARED1, SHARED2, TARGET_A, TARGET_B
+    """
+    Initiates the execution of two modules in parallel
+    Args:
+        module_class_A (class): The module class to be initiated
+        configuration_A (dict): The module options
+        module_class_B (class): The module class to be initiated
+        configuration_B (dict): The module options
+    Returns:
+        None
+    """
+    object_a = None
+    object_b = None
+    shared_a = None
+    shared_b = None
+    target_a = None
+    target_b = None
     target_a_pipe, target_b_pipe = Pipe()
     result = []
-    shared_memory = [target_a_pipe, target_b_pipe, OBJECTA, OBJECTB, SHARED1, SHARED2, result]
+    shared_memory = [target_a_pipe, target_b_pipe, object_a, object_b, shared_a, shared_b, result]
 
-    TARGET_A = Thread(target=operate_diff_part,
+    target_a = Thread(target=operate_diff_part,
                       args=(module_class_A, configuration_A, shared_memory, 1))
-    TARGET_A.setDaemon(True)
-    TARGET_A.start()
-    TARGET_B = Thread(target=operate_diff_part,
+    target_a.setDaemon(True)
+    target_a.start()
+    target_b = Thread(target=operate_diff_part,
                       args=(module_class_B, configuration_B, shared_memory, 2))
-    TARGET_B.setDaemon(True)
-    TARGET_B.start()
+    target_b.setDaemon(True)
+    target_b.start()
     while True:
-        TARGET_A.join(600)
-        if not TARGET_A.isAlive():
-            TARGET_A = None
+        target_a.join(600)
+        if not target_a.isAlive():
+            target_a = None
             break
     print 'thread one finished'
     # End Cross _check
-    TARGET_B.join(0)
-    TARGET_B = None
+    target_b.join(0)
+    target_b = None
     print 'thread two finished'
     return  shared_memory[6]
 
