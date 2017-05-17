@@ -30,6 +30,11 @@ class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
                             }
                             window.onerror = function(msg, url) {
+                                                 console.log(msg);
+                                                 if (msg.indexOf("a is not a function") !=-1) {
+                                                      myParent.postMessage('0', '*');
+                                                      start = 1;
+                                                 }
                                                  return true;
                                             };
                             function a(){
