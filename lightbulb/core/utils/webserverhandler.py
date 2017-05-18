@@ -22,7 +22,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
               window.onerror = function(msg, url) {
                  console.log(msg);
-                 if (msg.indexOf("a is not a function") !=-1) {
+                 if (msg.indexOf(" a is not a function") !=-1) {
                       x = 0;
                  }
                  changed = 1;
