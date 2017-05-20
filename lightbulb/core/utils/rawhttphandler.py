@@ -13,6 +13,7 @@ META = {
         ('MESSAGE', "GET / HTTP/1.1", True, 'The HTTP raw request to send. The targetted parameter must me marked as  --LIGHTBULB--REPLACE--HERE--'),
         ('HOST', "127.0.0.1", True, 'The target host'),
         ('PORT', 80, True, 'The target port'),
+        ('HTTPS', False, True, 'Whether to use SSL/TLS'),
         ('BLOCK', None, False, 'The response string that indicates that the WAF blocks the request'),
         ('BYPASS', None, False, 'The response string that indicates that the WAF allows the request'),
 
@@ -31,6 +32,7 @@ class RawHTTPHandler:
         self.message = configuration['MESSAGE']
         self.host = configuration['HOST']
         self.port = configuration['PORT']
+        self.https = configuration['HTTPS']
         self.fail_regex = configuration['BLOCK']
         self.success_regex = configuration['BYPASS']
 
