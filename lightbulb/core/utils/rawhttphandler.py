@@ -2,7 +2,9 @@ import re
 import urllib
 import sys
 import socket
+import base64
 import ssl
+from lightbulb.core.utils.common import accept_bool
 
 META = {
     'author': 'George Argyros, Ioannis Stais',
@@ -29,10 +31,10 @@ class RawHTTPHandler:
         socket.setdefaulttimeout = 0.50
 
     def setup(self, configuration):
-        self.message = configuration['MESSAGE']
+        self.message = base64.b64decode(configuration['MESSAGE']).decode("utf-8", "ignore")
         self.host = configuration['HOST']
-        self.port = configuration['PORT']
-        self.https = configuration['HTTPS']
+        self.port = int(configuration['PORT'])
+        self.https = accept_bool(configuration['HTTPS'])
         self.fail_regex = configuration['BLOCK']
         self.success_regex = configuration['BYPASS']
 
@@ -56,11 +58,10 @@ class RawHTTPHandler:
             # s.settimeout(0.30)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.setblocking(1)
-            if self.https > -1:
+            if self.https >0:
                 wrappedSocket = ssl.wrap_socket(s)
                 s = wrappedSocket
             s.connect((self.host, self.port))
-
             s.send(request)
             response = (s.recv(1000000))
             s.shutdown(1)
@@ -74,7 +75,6 @@ class RawHTTPHandler:
         try:
             found = False
             html = response.decode('utf-8')
-            print html
             if self.fail_regex is not None and self.fail_regex != "":
                 pattern = r'' + self.fail_regex
                 hits = re.findall(pattern, html)
