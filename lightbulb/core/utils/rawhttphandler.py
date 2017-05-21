@@ -75,7 +75,7 @@ class RawHTTPHandler:
         try:
             found = False
             html = response.decode('utf-8')
-            if self.fail_regex is not None and self.fail_regex != "":
+            if self.fail_regex is not None and self.fail_regex != "" and self.fail_regex != "None":
                 pattern = r'' + self.fail_regex
                 hits = re.findall(pattern, html)
                 if len(hits) > 0:
@@ -83,7 +83,7 @@ class RawHTTPHandler:
                 else:
                     found = False
             if not found:
-                if self.success_regex is not None and self.success_regex != "":
+                if self.success_regex is not None and self.success_regex != "" and self.success_regex != "None":
                     pattern = r'' + self.success_regex
                     hits = re.findall(pattern, html)
                     if len(hits) > 0:
