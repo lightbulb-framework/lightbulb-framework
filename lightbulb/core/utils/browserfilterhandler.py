@@ -19,6 +19,7 @@ META = {
         ('BROWSERPARSE', True, True, 'Positive response if browser parses a JavaScript payload'),
         ('DELAY', "50", True, 'Wait time for objects to load'),
         ('HOST', "localhost", True, 'The Web server and web socket host'),
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
     ],
     'comments': ['Sample comment 1', 'Sample comment 2']
 }
@@ -59,6 +60,9 @@ class BrowserFilterHandler:
                                     if browser does not parse JavaScript.
         """
         self.setup(configuration)
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
         self.wsport = int(self.wsport)
         self.wbport = int(self.wbport)
         self.browserparses = accept_bool(self.browserparses)
@@ -130,6 +134,8 @@ class BrowserFilterHandler:
 
         self.server[0].send(["serverrequest", ''.join(x.encode('hex') for x in string)])
         updates = self.server[0].recv()
+        if self.echo:
+            print self.echo
         if updates[0] == "browserresponse" \
                 and updates[1] == self.return_code_1:
             return True

@@ -16,6 +16,7 @@ META = {
         ('DATABASE', None, True, 'The MySQL database'),
         ('PREFIX_QUERY', None, True, 'The sql query to be concatenated'),
         ('SQLPARSE', True, True, 'Positive response if sql parses a query payload'),
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
     ],
     'comments': ['Sample comment 1', 'Sample comment 2']
 }
@@ -153,6 +154,8 @@ class SQLHandler():
             bool: A success or failure response
         """
         rows = self.query_database(string.replace(self.prefix_query, '**', query))
+        if self.echo:
+            print self.echo
         if rows == False:
             # print 'Request: '+string.replace(self.initquery, '**', query)+'
             # (FALSE)'
@@ -195,6 +198,9 @@ class SQLHandler():
             None
         """
         self.setup(configuration)
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
         self.port = int(self.port)
         self.sqlparse = accept_bool(self.sqlparse)
         db_config = {}

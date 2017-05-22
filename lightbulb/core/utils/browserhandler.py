@@ -1,5 +1,5 @@
 import sys
-from lightbulb.core.utils.ipc import  Pipe
+from lightbulb.core.utils.ipc import Pipe
 import base64
 from lightbulb.core.utils.webserverhandler import WebServerHandler
 from lightbulb.core.utils.SimpleWebServer import SimpleWebServer
@@ -10,7 +10,7 @@ from threading import Thread
 
 META = {
     'author': 'George Argyros, Ioannis Stais',
-    'name':'BrowserHandler',
+    'name': 'BrowserHandler',
     'description': 'Performs membership queries in a browser',
     'type': 'UTIL',
     'options': [
@@ -19,10 +19,10 @@ META = {
         ('BROWSERPARSE', True, True, 'Positive response if browser parses a JavaScript payload'),
         ('DELAY', "50", True, 'Wait time for objects to load'),
         ('HOST', "localhost", True, 'The Web server and web socket host'),
-   ],
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
+    ],
     'comments': ['Sample comment 1', 'Sample comment 2']
 }
-
 
 
 def serve(server):
@@ -47,7 +47,6 @@ def serve_html(server):
 
 
 class BrowserHandler:
-
     def __init__(self, configuration):
         """
         Initialization function
@@ -61,6 +60,9 @@ class BrowserHandler:
         """
 
         self.setup(configuration)
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
         self.wsport = int(self.wsport)
         self.wbport = int(self.wbport)
         self.browserparse = accept_bool(self.browserparse)
@@ -100,7 +102,7 @@ class BrowserHandler:
         webbrowser.setDaemon(True)
         webbrowser.start()
         print 'OK'
-        print 'Please connect your Browser at http://'+self.host + ':' + repr(self.wbport)
+        print 'Please connect your Browser at http://' + self.host + ':' + repr(self.wbport)
         print 'Verifying Web Socket connection:',
         updates = parent_conn_a.recv()
         if updates[0] == "browserstatus" and updates[1] == 1:
@@ -120,7 +122,6 @@ class BrowserHandler:
         self.websocketserver = websocketserver
         self.webbrowserserver = webbrowserserver
 
-
     def setup(self, configuration):
         self.wsport = configuration['WSPORT']
         self.wbport = configuration['WBPORT']
@@ -128,11 +129,12 @@ class BrowserHandler:
         self.delay = configuration['DELAY']
         self.host = configuration['HOST']
 
-
     def query(self, string):
 
         self.server[0].send(["serverrequest", ''.join(x.encode('hex') for x in string)])
         updates = self.server[0].recv()
+        if self.echo:
+            print self.echo
         if updates[0] == "browserresponse" \
                 and updates[1] == self.return_code_1:
             return True
@@ -162,5 +164,4 @@ class BrowserHandler:
             self.websocketserver.close()
         if self.webbrowserserver is not None:
             self.webbrowserserver.close()
-   
 

@@ -18,6 +18,7 @@ META = {
         ('HTTPS', False, True, 'Whether to use SSL/TLS'),
         ('BLOCK', None, False, 'The response string that indicates that the WAF blocks the request'),
         ('BYPASS', None, False, 'The response string that indicates that the WAF allows the request'),
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
 
     ],
     'comments': ['Sample comment 1', 'Sample comment 2']
@@ -29,6 +30,10 @@ class RawHTTPHandler:
     def __init__(self, configuration):
         self.setup(configuration)
         socket.setdefaulttimeout = 0.50
+
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
 
     def setup(self, configuration):
         self.message = base64.b64decode(configuration['MESSAGE']).decode("utf-8", "ignore")
@@ -71,7 +76,8 @@ class RawHTTPHandler:
             print 'error when making the request'
             print sys.exc_info()
             response = self.fail_regex
-
+        if self.echo:
+            print self.echo
         try:
             found = False
             html = response.decode('utf-8')
@@ -90,6 +96,7 @@ class RawHTTPHandler:
                         found = False
                     else:
                         found = True
+
             if verbose:
                 return found, request, response
             else:
