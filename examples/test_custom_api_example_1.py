@@ -1,4 +1,4 @@
-from lightbulb.api.api_native import LightBulb
+from lightbulb.api.api import LightBulb
 from lightbulb.core.utils.browserhandler import BrowserHandler
 from lightbulb.core.utils.httphandler import HTTPHandler
 
