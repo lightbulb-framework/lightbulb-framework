@@ -5,6 +5,7 @@ import getpass
 from os.path import expanduser
 from symautomata.dfa import  DFA
 import imp
+import re
 
 def accept_bool(user_input):
     """
@@ -24,7 +25,12 @@ def accept_bool(user_input):
 
 
 def findlibrary(path):
-    return  path.replace('{library}',imp.find_module('lightbulb')[1]+"/data/")
+    path = re.sub('.*my_saved_models/', expanduser("~") + "/.LightBulb/models/", path)
+    path = re.sub('.*my_saved_regex/', expanduser("~") + "/.LightBulb/regex/", path)
+    path = re.sub('.*my_saved_trees/', expanduser("~") + "/.LightBulb/trees/", path)
+    path = re.sub('.*my_saved_grammars/', expanduser("~") + "/.LightBulb/grammars/", path)
+    path = path.replace('{library}', imp.find_module('lightbulb')[1]+"/data/")
+    return path
 
 def save_model(save, model):
     if not isinstance(save, basestring):

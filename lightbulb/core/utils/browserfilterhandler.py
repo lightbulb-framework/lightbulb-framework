@@ -1,13 +1,12 @@
-import signal
 import sys
-from multiprocessing import Process, Pipe
+from lightbulb.core.utils.ipc import  Pipe
 import base64
 from lightbulb.core.utils.webserveriframehandler import WebServerIframeHandler
 from lightbulb.core.utils.SimpleWebServer import SimpleWebServer
 from lightbulb.core.utils.SimpleWebSocketServer import SimpleWebSocketServer
 from lightbulb.core.utils.sockethandler import SocketHandler
 from lightbulb.core.utils.common import accept_bool
-
+from threading import Thread
 
 META = {
     'author': 'George Argyros, Ioannis Stais',
@@ -20,54 +19,30 @@ META = {
         ('BROWSERPARSE', True, True, 'Positive response if browser parses a JavaScript payload'),
         ('DELAY', "50", True, 'Wait time for objects to load'),
         ('HOST', "localhost", True, 'The Web server and web socket host'),
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
     ],
     'comments': ['Sample comment 1', 'Sample comment 2']
 }
 
 
-def signal_handler(signal, frame):
-    """
-    Terminate servers on SIGINT
-    Args:
-        signal (int): The requested signal.
-        frame (func): The signal handler
-    Returns:
-        None
-    """
-
-    sys.exit(0)
-
-def serve(server, parentconn, conn, port):
+def serve(server):
     """
     Initializes the websocket server
     Args:
         server (SimpleWebSocketServer): The web socket server
-        parentconn (Pipe): A communication channel with SFA Diff
-        conn (Pipe): A communication channel with the browser handler
-        port (int): The port number to be used
     Returns:
         None
     """
-    signal.signal(signal.SIGINT, signal_handler)
-    server.websocketclass.parentconn = parentconn
-    server.websocketclass.conn = conn
-    server.websocketclass.myport = port
     server.serveforever()
 
-def serve_html(server, delay, host, port):
+def serve_html(server):
     """
     Initializes the web browser server
     Args:
         server (SimpleWebServer): The web browser server
-        delay (int): Time to wait for an object to load
-        port (int): The web socket port number to be used
     Returns:
         None
     """
-    signal.signal(signal.SIGINT, signal_handler)
-    server.websocketclass.delay = delay
-    server.websocketclass.myport = port
-    server.websocketclass.myhost = host
     server.serveforever()
 
 class BrowserFilterHandler:
@@ -85,6 +60,9 @@ class BrowserFilterHandler:
                                     if browser does not parse JavaScript.
         """
         self.setup(configuration)
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
         self.wsport = int(self.wsport)
         self.wbport = int(self.wbport)
         self.browserparses = accept_bool(self.browserparses)
@@ -103,28 +81,24 @@ class BrowserFilterHandler:
 
         parent_conn_a, child_conn_a = Pipe()
         websocketserver = SimpleWebSocketServer(
-            self.host, self.wsport, SocketHandler)
+            self.host, self.wsport, SocketHandler, parent_conn_a, child_conn_a, self.wsport)
         print 'Starting WebSocket Server at port ' + repr(self.wsport) + ': ',
-        websocket = Process(
+        websocket = Thread(
             target=serve,
             args=(
                 websocketserver,
-                parent_conn_a,
-                child_conn_a,
-                self.wsport,
             ))
+        websocket.setDaemon(True)
         websocket.start()
         print 'OK'
         print 'Starting HTTP Server at port ' + repr(self.wbport) + ': ',
-        webbrowserserver = SimpleWebServer(self.host, self.wbport, WebServerIframeHandler)
-        webbrowser = Process(
+        webbrowserserver = SimpleWebServer(self.host, self.wbport, WebServerIframeHandler, self.delay, self.wsport)
+        webbrowser = Thread(
             target=serve_html,
             args=(
                 webbrowserserver,
-                self.delay,
-                self.host,
-                self.wsport,
             ))
+        webbrowser.setDaemon(True)
         webbrowser.start()
         print 'OK'
         print 'Please connect your Browser at http://'+self.host + ':' + repr(self.wbport)
@@ -158,8 +132,10 @@ class BrowserFilterHandler:
 
     def query(self, string):
 
-        self.server[0].send(["serverrequest", base64.b64encode(string)])
+        self.server[0].send(["serverrequest", ''.join(x.encode('hex') for x in string)])
         updates = self.server[0].recv()
+        if self.echo:
+            print self.echo
         if updates[0] == "browserresponse" \
                 and updates[1] == self.return_code_1:
             return True
@@ -169,9 +145,19 @@ class BrowserFilterHandler:
         if updates[0] == "browserstatus" and updates[1] == 0:
             print 'Browser disconnected. Awaiting to connect again..'
             while True:
+                print 'Verifying Web Socket connection:',
                 updates = self.server[0].recv()
                 if updates[0] == "browserstatus" and updates[1] == 1:
-                    return self.query(self.server, string)
+                    print 'OK'
+                else:
+                    print 'FAIL'
+                print 'Awaiting initialization command:',
+                updates = self.server[0].recv()
+                if updates[0] == "browserresponse" and updates[1] == "INIT":
+                    print 'OK'
+                else:
+                    print 'FAIL'
+                return self.query(string)
 
     def __del__(self):
         print 'del'
@@ -179,10 +165,4 @@ class BrowserFilterHandler:
             self.websocketserver.close()
         if self.webbrowserserver is not None:
             self.webbrowserserver.close()
-
-        if  self.websocket is not None:
-            self.websocket.terminate()
-        if self.webbrowser is not None:
-            self.webbrowser.terminate()
-
 

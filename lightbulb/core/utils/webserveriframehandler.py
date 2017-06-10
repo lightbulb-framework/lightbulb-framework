@@ -5,11 +5,6 @@ from urllib import  unquote
 
 class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     """This class handles browser content"""
-    delay = 50
-    myport = 0
-    myhost = "localhost"
-
-
 
     def log_message(self, format, *args):
         # sys.stderr.write("%input_string - - [%input_string] %input_string\n" %
@@ -35,6 +30,11 @@ class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
                             }
                             window.onerror = function(msg, url) {
+                                                 console.log(msg);
+                                                 if (msg.indexOf(" a is not a function") !=-1) {
+                                                      myParent.postMessage('0', '*');
+                                                      start = 1;
+                                                 }
                                                  return true;
                                             };
                             function a(){
@@ -55,7 +55,7 @@ class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                                     }
                                 } else {
                                      y =  y+1;
-                                    setTimeout( wait, """ + `self.delay` + """ );
+                                    setTimeout( wait, """ + `self.server.delay` + """ );
                                 }
                             })();
                             </script>
@@ -85,15 +85,17 @@ class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
                   function doConnect()
                   {
-                    websocket = new WebSocket("ws://""" + self.myhost + """:""" + `self.myport` + """/");
+                    websocket = new WebSocket("ws://""" + self.server.myhost + """:""" + `self.server.myport` + """/");
                     websocket.onopen = function(evt) { websocket.send("INIT"); };
                     websocket.onmessage = function(evt) { onMessage(evt) };
                   }
 
-                  function b64DecodeUnicode(str) {
-                    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-                    return '%' + c.charCodeAt(0).toString(16);
-                    }).join(''));
+                  function hexdecoder(hex) {
+                    var str = '';
+                    for (var i = 0; i < hex.length; i += 2){
+                      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                    }
+                    return str;
                   }
 
                   window.addEventListener( "message",
@@ -112,12 +114,12 @@ class WebServerIframeHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                       if (evt.data instanceof Blob){
                         var reader = new FileReader();
                         reader.addEventListener("loadend", function() {
-                            text=b64DecodeUnicode(reader.result);
+                            text=hexdecoder(reader.result);
                             writeToScreen(text);
                         });
                         reader.readAsText(evt.data);
                       }else{
-                        text=b64DecodeUnicode(reader.result);
+                        text=hexdecoder(reader.result);
                         writeToScreen(text);
                       }
 

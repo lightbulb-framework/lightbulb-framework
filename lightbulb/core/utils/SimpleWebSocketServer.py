@@ -576,7 +576,7 @@ class WebSocket(object):
 
 
 class SimpleWebSocketServer(object):
-   def __init__(self, host, port, websocketclass, selectInterval = 0.1):
+   def __init__(self, host, port, websocketclass, parentconn, conn, myport, selectInterval = 0.1):
       self.websocketclass = websocketclass
       self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       self.serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -585,12 +585,19 @@ class SimpleWebSocketServer(object):
       self.selectInterval = selectInterval
       self.connections = {}
       self.listeners = [self.serversocket]
+      self.parentconn = parentconn
+      self.conn = conn
+      self.myport = myport
 
    def _decorateSocket(self, sock):
       return sock
 
    def _constructWebSocket(self, sock, address):
-      return self.websocketclass(self, sock, address)
+      socket = self.websocketclass(self, sock, address)
+      socket.parentconn = self.parentconn
+      socket.conn = self.conn
+      socket.myport = self.myport
+      return socket
 
    def close(self):
       self.serversocket.close()
@@ -719,7 +726,7 @@ class SimpleWebSocketServer(object):
 
 class SimpleSSLWebSocketServer(SimpleWebSocketServer):
 
-   def __init__(self, host, port, websocketclass, certfile,
+   def __init__(self, host, port, websocketclass, parentconn, conn, myport, certfile,
                 keyfile, version = ssl.PROTOCOL_TLSv1, selectInterval = 0.1):
 
       SimpleWebSocketServer.__init__(self, host, port,
@@ -727,6 +734,9 @@ class SimpleSSLWebSocketServer(SimpleWebSocketServer):
 
       self.context = ssl.SSLContext(version)
       self.context.load_cert_chain(certfile, keyfile)
+      self.parentconn = parentconn
+      self.conn = conn
+      self.myport = myport
 
    def close(self):
       super(SimpleSSLWebSocketServer, self).close()
@@ -738,6 +748,10 @@ class SimpleSSLWebSocketServer(SimpleWebSocketServer):
    def _constructWebSocket(self, sock, address):
       ws = self.websocketclass(self, sock, address)
       ws.usingssl = True
+      ws.parentconn = self.parentconn
+      ws.conn = self.conn
+      ws.myport = self.myport
+
       return ws
 
    def serveforever(self):

@@ -22,6 +22,7 @@ META = {
         ('PROXY_PASSWORD', None, False, 'The proxy password'),
         ('USER_AGENT', "Mozilla/5.0", True, 'The request user agent'),
         ('REFERER', "http://google.com", True, 'The request referrer'),
+        ('ECHO', None, False, 'Optional custom debugging message that is printed on each membership request'),
     ],
     'comments': ['Sample comment 1', 'Sample comment 2']
 }
@@ -30,6 +31,9 @@ class HTTPHandler:
 
     def __init__(self, configuration):
         self.setup(configuration)
+        self.echo = None
+        if "ECHO" in configuration:
+            self.echo = configuration['ECHO']
         if self.proxy_scheme is not None and self.proxy_host is not None and \
                         self.proxy_port is not None:
             credentials = ""
@@ -71,7 +75,6 @@ class HTTPHandler:
         Returns:
             bool: A success or failure response
         """
-
         concat_param = None
 
         if self.request_type == 'GET':
@@ -107,7 +110,8 @@ class HTTPHandler:
             else:
                 print 'Can not connect. We failed with error code - %s.' % error.code
                 exit()
-
+        if self.echo:
+            print self.echo
         if self.block is not None and self.block != "":
             pattern = r'' + re.escape(self.block)
             hits = re.findall(pattern, html)

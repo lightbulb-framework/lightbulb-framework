@@ -167,6 +167,6 @@ class GOFA(_SFALearner):
             ('Equivalence Queries ', repr(self.equivalence_queries)),
             ('Cached Equivalence Queries ', repr(self.cache_equivalence_queries))]
         save = None
-        if self.save and not self.bypass:
+        if self.save and self.save != "False" and not self.bypass:
             stats.append((save_model(self.save, self.get_sfa_conjecture().concretize())))
         return stats

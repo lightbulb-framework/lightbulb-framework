@@ -4,9 +4,6 @@ import SimpleHTTPServer
 
 class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     """This class handles browser content"""
-    delay = 50
-    myport = 0
-    myhost = "localhost"
 
     def log_message(self, format, *args):
         # sys.stderr.write("%input_string - - [%input_string] %input_string\n" %
@@ -25,14 +22,19 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
               window.onerror = function(msg, url) {
                  console.log(msg);
+                 if (msg.indexOf(" a is not a function") !=-1) {
+                      x = 0;
+                 }
                  changed = 1;
                  return true;
               };
 
-              function b64DecodeUnicode(str) {
-                return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-                return '%' + c.charCodeAt(0).toString(16);
-                }).join(''));
+              function hexdecoder(hex) {
+                var str = '';
+                for (var i = 0; i < hex.length; i += 2){
+                  str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                }
+                return str;
               }
                var waitUntil = function (fn, condition, interval) {
                   interval = interval || 100;
@@ -58,7 +60,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
               };
               function doConnect()
               {
-                websocket = new WebSocket("ws://""" + self.myhost + """:""" + `self.myport` + """/");
+                websocket = new WebSocket("ws://""" + self.server.myhost + """:""" + `self.server.myport` + """/");
                 websocket.onopen = function(evt) { websocket.send("INIT"); };
                 websocket.onmessage = function(evt) { onMessage(evt) };
               }
@@ -69,12 +71,12 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if (evt.data instanceof Blob){
                   var reader = new FileReader();
                   reader.addEventListener("loadend", function() {
-                      text=b64DecodeUnicode(reader.result); 
+                      text=hexdecoder(reader.result); 
                       writeToScreen(text);
                   });
                   reader.readAsText(evt.data);
                 }else{
-                  text=b64DecodeUnicode(reader.result); 
+                  text=hexdecoder(reader.result); 
                   writeToScreen(text);
                 }
               }
@@ -109,7 +111,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                             console.log(x);websocket.send(x);
                         } else {
                              y =  y+1;
-                            setTimeout( wait, """ + `self.delay` + """ );
+                            setTimeout( wait, """ + `self.server.delay` + """ );
                         }
                     })();
                   },

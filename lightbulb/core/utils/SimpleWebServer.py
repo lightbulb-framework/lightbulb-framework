@@ -6,7 +6,7 @@ class SimpleWebServer():
     httpd = None
     websocketclass = None
 
-    def __init__(self, host, port, handler):
+    def __init__(self, host, port, handler, delay, wsport):
         """
         Args:
             host (str): The IP address for the websockets
@@ -19,6 +19,9 @@ class SimpleWebServer():
         self.websocketclass = handler
         SocketServer.TCPServer.allow_reuse_address = True
         self.httpd = SocketServer.TCPServer((host, port), self.websocketclass)
+        self.httpd.myhost = host
+        self.httpd.delay = delay
+        self.httpd.myport = wsport
 
     def serveforever(self):
         """Initialize Websockets Server"""
