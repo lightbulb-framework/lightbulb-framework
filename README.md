@@ -150,7 +150,7 @@ If you wish to use the new GUI, you can use the extension for the [Burp Suite](h
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_jython_python.png" width="300">
 
-* Select the new LightBulb module and set the extension type to be "Python"
+* Select the new LightBulb module ("BurpExtension.py") and set the extension type to be "Python"
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
 
