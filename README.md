@@ -1,5 +1,5 @@
 # LightBulb
-LightBulb is an open source python framework for auditing web applications firewalls.
+LightBulb is an open source python framework for auditing web application firewalls and filters.
 
 <p align="center">
 <img src="https://lightbulb-framework.github.io/assets/images/logo5full.png" height="400">
