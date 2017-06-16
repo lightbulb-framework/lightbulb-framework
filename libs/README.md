@@ -1,0 +1,1 @@
+The files that are included in the Lib folder are only used by the Burp extension
