@@ -165,8 +165,7 @@ class BurpExtender(
             category = category + 2
 
         total_Regex = self.findSelectedSettingsCategorized("Regex", category)
-        total_Grammar = self.findSelectedSettingsCategorized(
-            "Grammar", category + 1)
+        total_Grammar = self.findSelectedSettingsCategorized("Grammar", category + 1)
 
         if len(total_Regex) > 0 and len(total_Grammar) > 0:
             print 'Error, Regex and Grammars cannot be processed together. Please select one of these categories'
@@ -224,8 +223,9 @@ class BurpExtender(
                         JOptionPane.INFORMATION_MESSAGE)
                     return {}
         else:
-            configuration[name + '_FILE'] = None
-            configuration[name + '_FILE_TYPE'] = None
+            if name + '_FILE' not in configuration:
+                configuration[name + '_FILE'] = None
+                configuration[name + '_FILE_TYPE'] = None
 
         return configuration
 
