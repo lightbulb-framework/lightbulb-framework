@@ -196,7 +196,7 @@ class BurpExtender(
 
         if len(total_Grammar) > 0:
             configuration[
-                name + '_FILE'] = '{library}/grammar/' + total_Grammar[0] + '.y'
+                name + '_FILE'] = '{library}/grammars/' + total_Grammar[0] + '.y'
             configuration[name + '_FILE_TYPE'] = 'GRAMMAR'
         else:
             configuration[name + '_FILE'] = None
@@ -405,7 +405,7 @@ class BurpExtender(
 
     def addGrammar(self, value, path):
         name = path
-        if path[0:10] == "/grammar/":
+        if path[0:10] == "/grammars/":
             name = path[10:]
         self._db.addSetting(name, False, "Grammar", value[1], path)
 
