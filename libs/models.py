@@ -138,6 +138,7 @@ class BurpDatabaseModels():
         self.lock.acquire()
         settingIndex = -1
         for i in self.getActiveSettingIndexes(domain):
+
             if self.arrayOfSettings[i]._name == name:
                 settingIndex = i
         if settingIndex < 0:

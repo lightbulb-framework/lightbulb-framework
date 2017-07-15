@@ -1013,6 +1013,8 @@ class BurpExtender(
                 status = e.valueIsAdjusting
                 if not status:
                     wrapper = e.source.getMaxSelectionIndex()
+                    if wrapper < 0:
+                        return
                     print self.parent.model._db.getSettingByRow(wrapper, self.parent.model._domain)._name
                     #reader = FileReader(self.parent.model._db.getSettingByRow(wrapper,self.parent.model._domain)._name)
 
@@ -1919,9 +1921,54 @@ class BurpExtender(
                 wafs[wafkey]['HANDLER'] = BurpHTTPHandler(handlerconfig)
             print 'handlerconfig OK'
             configuration['WAFS'] = wafs
+
+            name = configuration['FILE_OUT']
+            data = "changeddata"
+            category = "trees"
+            extension = ".json"
+            categorytype = "Tree"
+            specialcat = "my_saved_trees"
+
+            home = expanduser("~")
+            timestr = time.strftime("%Y%m%d-%H%M%S")
+            if not os.path.exists(home + "/.LightBulb/"):
+                os.makedirs(home + "/.LightBulb/")
+            if not os.path.exists(home + "/.LightBulb/" + category):
+                os.makedirs(home + "/.LightBulb/" + category)
+
+            if os.path.exists(home + "/.LightBulb/" + category + "/" + name + ".py"):
+                JOptionPane.showMessageDialog(
+                    self._splitpane,
+                    'File already exists. Please choose a different name',
+                    "Error",
+                    JOptionPane.INFORMATION_MESSAGE)
+                return
+            configuration['FILE_OUT'] = home + "/.LightBulb/" + category + "/" + name + extension
             stats = self.lightbulbapp.start_treegeneration_module(
                 configuration)
             self.updateCampaign(campaignindex, 'Finished', stats)
+
+
+            ruleset_file_meta = open(
+                home + "/.LightBulb/" + category + "/" + name + ".py", "w")
+            ruleset_file_meta.write(
+                "META = {\n\
+                        'author': '" + getpass.getuser() + "',\n\
+                        'description': 'Saved tree on " + timestr + "',\n\
+                        'type':'" + categorytype + "',\n\
+                        'comments': []\n\
+                }")
+            ruleset_file_meta.close()
+            print "Saved Model", home + "/.LightBulb/" + category + "/" + name + ".py"
+            print specialcat + "/" + name, False, categorytype, 'Saved model on ' + timestr, specialcat + "/" + name
+            self._db.addSetting(
+                specialcat + "/" + name,
+                False,
+                categorytype,
+                'Saved tree on ' + timestr,
+                specialcat + "/" + name)
+            self.libraryredraw.redraw()
+            ### End Saving ###
         except:
             print 'error in DistinguishTreeThread'
             print sys.exc_info()
