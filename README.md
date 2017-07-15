@@ -131,6 +131,8 @@ lightbulb status
 
 The "lightbulb status" command will guide you to install MySQLdb and OpenFst support. If you use virtualenv in linux, the "sudo" command will be required only for the installation of libmysqlclient-dev package.
 
+It should be noted that the "lightbulb status" command is not necessary if you are going to use the Burp Extension. The reason is that this command installs the "openfst" and "mysql" bindings and the extension by default is using Jython, which does not support C bindings. It is recommended to use the command only if you want to change the Burp extension configuration from the settings and enable the native support.
+
 It is also possible to use a docker instance:
 
 ```bash
