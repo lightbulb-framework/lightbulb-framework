@@ -820,7 +820,6 @@ class BurpExtender(
                         JOptionPane.INFORMATION_MESSAGE)
                     return
                 data = selfExtender._editArea.getText()
-                print data
                 category = selfExtender.selectedCat
                 extension = selfExtender.selectedExt
                 categorytype = selfExtender.selectedCatType
