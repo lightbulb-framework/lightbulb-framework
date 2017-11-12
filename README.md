@@ -147,14 +147,16 @@ docker pull lightbulb/lightbulb-framework
 If you wish to use the new GUI, you can use the extension for the [Burp Suite](https://portswigger.net/burp/). First you have to setup a working environment with Burp Proxy and Jython
 
 * Download the latest Jython from [here](http://www.jython.org/downloads.html)
-* Find your local python packages installation folder
-* Configure Burp Extender to use these values, as shown below
+* Find your local python packages installation folder*
+* Configure Burp Extender to use these values, as shown below*
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_jython_python.png" width="300">
 
 * Select the new LightBulb module ("BurpExtension.py") and set the extension type to be "Python"
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
+
+*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/1454993/lightbulb-framework.zip)
 
 ## Examples
 
