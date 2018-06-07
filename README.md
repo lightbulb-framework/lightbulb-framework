@@ -156,7 +156,7 @@ If you wish to use the new GUI, you can use the extension for the [Burp Suite](h
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
 
-*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/1454993/lightbulb-framework.zip)
+*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip)
 
 ## Examples
 

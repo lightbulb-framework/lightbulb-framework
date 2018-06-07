@@ -79,7 +79,7 @@ class RawHTTPHandler:
             print self.echo
         try:
             found = False
-            html = response.decode('utf-8')
+            html = response.decode('utf-8',  errors='ignore')
             if self.fail_regex is not None and self.fail_regex != "" and self.fail_regex != "None":
                 pattern = r'' + self.fail_regex
                 hits = re.findall(pattern, html)
