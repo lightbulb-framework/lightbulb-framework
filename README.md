@@ -348,7 +348,7 @@ Then, you have to setup a working environment with Burp Proxy and Jython
 
 *You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip)
 
-** The latest Jython 2.7.X is supported. However MySQL Differential Learning still requires Jython 2.5.X since the MySQL connector jar cannot be dynamically imported in the classpath.
+** The latest Jython 2.7.X is supported. However MySQL Differential Learning may still require an older version (eg. Jython 2.5.X) since the MySQL connector jar cannot be dynamically imported in the classpath.
 
 ## Examples
 
