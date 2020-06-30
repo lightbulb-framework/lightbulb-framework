@@ -328,7 +328,7 @@ You can also use the following steps to install the latest version of the extens
 
 First, it is recommended to increase the available memory for Burp using the following command:
 
-`java -jar -Xmx2048M /path/to/burpbinary`
+`java -Xmx2048M -jar /path/to/burpbinary`
 
 Also, Lightbulb uses the native binary of flex parser. As a result, it is recommended to install flex before using the tool. In Debian system it can be installed with the following command:
 
