@@ -27,6 +27,8 @@ from javax.swing import JTabbedPane
 from javax.swing import JTextArea
 from javax.swing.event import ListSelectionListener
 from javax.swing.table import JTableHeader
+from subprocess import check_output
+
 sys.path.insert(
     1,
     os.path.join(
@@ -46,6 +48,19 @@ from lightbulb.api.api_native import LightBulb as LightBulbNative
 from libs.handlers import BurpBrowserHandler, BurpBrowserFilterHandler, BurpSQLHandler, BurpHTTPHandler, NativeHandler
 import socket
 
+
+def flex_available():
+    """Lightbulb uses Flex parser to read the  automata.
+    The native Flex binary is the only solution
+    to handle large automata with a significant number of
+    state"""
+    try:
+        if check_output(["which", "flex"]) != "":
+            return 1
+        else:
+            return 0
+    except:
+        return 0
 
 def get_free_tcp_port(host):
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -918,48 +933,52 @@ class BurpExtender(
         # Message Table popups
         messagePopup = JPopupMenu()
         addPopup(self._messageTable, messagePopup)
-        messageRun = JMenuItem("Test Request(s)")
-        messageRun.addActionListener(actionRunMessage())
-        messagePopup.add(messageRun)
-        messageRemove = JMenuItem("Remove Request(s)")
-        messageRemove.addActionListener(actionRemoveMessage())
-        messagePopup.add(messageRemove)
-        messageLearning = JMenuItem("Start Filter Learning")
-        messageLearning.addActionListener(actionLearningMessage())
-        messagePopup.add(messageLearning)
-        messageDiffLearning = JMenuItem(
-            "Start Filters(s) Differential Learning (Select (2) Requests)")
-        messageDiffLearning.addActionListener(actionDiffLearningMessage())
-        messagePopup.add(messageDiffLearning)
-        messageDiffLearningMySQL = JMenuItem(
-            "Start Filter Differential Learning with MySQL")
-        messageDiffLearningMySQL.addActionListener(
-            actionDiffLearningMessageMySQL())
-        messagePopup.add(messageDiffLearningMySQL)
-        messageDiffLearningBrowser = JMenuItem(
-            "Start Filter Differential Learning with Browser")
-        messageDiffLearningBrowser.addActionListener(
-            actionDiffLearningMessageBrowser())
-        messagePopup.add(messageDiffLearningBrowser)
-        messageDiffLearningBrowserFilter = JMenuItem(
-            "Start Filter Differential Learning with Browser Filter")
-        messageDiffLearningBrowserFilter.addActionListener(
-            actionDiffLearningMessageBrowserFilter())
-        messagePopup.add(messageDiffLearningBrowserFilter)
-        messageDistinguish = JMenuItem("Start Filters(s) WAF Distinguish")
-        messageDistinguish.addActionListener(actionDistinguish())
-        messagePopup.add(messageDistinguish)
-        messageDistinguishTree = JMenuItem(
-            "Start Filters(s) Distinguish Tree Generation")
-        messageDistinguishTree.addActionListener(actionTreeGen())
-        messagePopup.add(messageDistinguishTree)
-        messageBrowserDiffLearning = JMenuItem(
-            "Start Browsers Differential Learning")
-        messageBrowserDiffLearning.addActionListener(actionDiffLearningMessageBrowserBrowser())
-        messagePopup.add(messageBrowserDiffLearning)
-        messageDistinguishTree = JMenuItem("Clear all requests")
-        messageDistinguishTree.addActionListener(actionClear())
-        messagePopup.add(messageDistinguishTree)
+        if flex_available():
+            messageRun = JMenuItem("Test Request(s)")
+            messageRun.addActionListener(actionRunMessage())
+            messagePopup.add(messageRun)
+            messageRemove = JMenuItem("Remove Request(s)")
+            messageRemove.addActionListener(actionRemoveMessage())
+            messagePopup.add(messageRemove)
+            messageLearning = JMenuItem("Start Filter Learning")
+            messageLearning.addActionListener(actionLearningMessage())
+            messagePopup.add(messageLearning)
+            messageDiffLearning = JMenuItem(
+                "Start Filters(s) Differential Learning (Select (2) Requests)")
+            messageDiffLearning.addActionListener(actionDiffLearningMessage())
+            messagePopup.add(messageDiffLearning)
+            messageDiffLearningMySQL = JMenuItem(
+                "Start Filter Differential Learning with MySQL")
+            messageDiffLearningMySQL.addActionListener(
+                actionDiffLearningMessageMySQL())
+            messagePopup.add(messageDiffLearningMySQL)
+            messageDiffLearningBrowser = JMenuItem(
+                "Start Filter Differential Learning with Browser")
+            messageDiffLearningBrowser.addActionListener(
+                actionDiffLearningMessageBrowser())
+            messagePopup.add(messageDiffLearningBrowser)
+            messageDiffLearningBrowserFilter = JMenuItem(
+                "Start Filter Differential Learning with Browser Filter")
+            messageDiffLearningBrowserFilter.addActionListener(
+                actionDiffLearningMessageBrowserFilter())
+            messagePopup.add(messageDiffLearningBrowserFilter)
+            messageDistinguish = JMenuItem("Start Filters(s) WAF Distinguish")
+            messageDistinguish.addActionListener(actionDistinguish())
+            messagePopup.add(messageDistinguish)
+            messageDistinguishTree = JMenuItem(
+                "Start Filters(s) Distinguish Tree Generation")
+            messageDistinguishTree.addActionListener(actionTreeGen())
+            messagePopup.add(messageDistinguishTree)
+            messageBrowserDiffLearning = JMenuItem(
+                "Start Browsers Differential Learning")
+            messageBrowserDiffLearning.addActionListener(actionDiffLearningMessageBrowserBrowser())
+            messagePopup.add(messageBrowserDiffLearning)
+            messageDistinguishTree = JMenuItem("Clear all requests")
+            messageDistinguishTree.addActionListener(actionClear())
+            messagePopup.add(messageDistinguishTree)
+        else:
+            messageNoFlex = JMenuItem("No attacks are available since flex parser was not found in your system. Please manually install flex and reload the extension (apt install flex)")
+            messagePopup.add(messageNoFlex)
 
         # Campaign Table popup
         campaignPopup = JPopupMenu()
