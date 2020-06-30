@@ -19,7 +19,7 @@ The framework consists of two main algorithms:
 
 ## Quick Installation
 
-LightBulb is available in BApp Store as an extesion for the [Burp Suite](https://portswigger.net/burp/). You can directly install LightBulb by navigating at the Burp Extender tab. You can also import latest the [standalone](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip) version of the extension.
+LightBulb is available in BApp Store as an extesion for the [Burp Suite](https://portswigger.net/burp/). You can directly install LightBulb by navigating at the Burp Extender tab. You can also import latest the [standalone](https://github.com/lightbulb-framework/lightbulb-framework/files/4853727/lightbulb-framework.zip) version of the extension.
 
 ## Motivation
 
@@ -346,7 +346,7 @@ Then, you have to setup a working environment with Burp Proxy and Jython
 
 <img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
 
-*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip)
+*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/4853727/lightbulb-framework.zip)
 
 ** The latest Jython 2.7.X is supported. However MySQL Differential Learning may still require an older version (eg. Jython 2.5.X) since the MySQL connector jar cannot be dynamically imported in the classpath.
 
