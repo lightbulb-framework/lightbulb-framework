@@ -23,11 +23,21 @@ def options_as_dictionary(meta):
     return  module_config
 
 def importmodule(name):
+    try:
+       try:
+          mod = __import__(name)
+       except:
+          print 'using alternative way to load ', name
+          modfile, pathname, description = imp.find_module(name)
+          mod = imp.load_module(name, modfile, pathname, description)
+          print 'module was successfully loaded'
+       components = name.split('.')
+       for comp in components[1:]:
+           mod = getattr(mod, comp)
+    except ImportError as error:
+       print 'error'
+       print error.__class__.__name__ + ": " + error.message
 
-    mod = __import__(name)
-    components = name.split('.')
-    for comp in components[1:]:
-        mod = getattr(mod, comp)
     return mod
 
 def create_object(object_type, object_type_configuration, handler, handler_configuration):
