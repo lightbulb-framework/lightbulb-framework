@@ -347,45 +347,8 @@ Then, you have to setup a working environment with Burp Proxy and Jython
 <img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
 
 *You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip)
+
 ** The latest Jython 2.7.X is supported. However MySQL Differential Learning still requires Jython 2.5.X since the MySQL connector jar cannot be dynamically imported in the classpath.
-
-## Examples
-
-Check out the [Wiki page](https://github.com/lightbulb-framework/lightbulb-framework/wiki) for usage examples.
-
-## Contributors
-
-* George Argyros
-* Ioannis Stais
-* Suman Jana
-* Angelos D. Keromytis
-* Aggelos Kiayias
-
-## References
-
-* *G. Argyros, I. Stais, S. Jana, A. D. Keromytis, and A. Kiayias. 2016. SFADiff: Automated Evasion Attacks and Fingerprinting Using Black-box Differential Automata Learning. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (CCS '16). ACM, New York, NY, USA, 1690-1701. doi: 10.1145/2976749.2978383*
-* *G. Argyros, I. Stais, A. Kiayias and A. D. Keromytis, "Back in Black: Towards Formal, Black Box Analysis of Sanitizers and Filters," 2016 IEEE Symposium on Security and Privacy (SP), San Jose, CA, 2016, pp. 91-109. doi: 10.1109/SP.2016.14*
-
-## Acknowledgements
-
-This research was partly supported by ERC project CODAMODA, #259152.
-
-## License
-
-MIT License as described in LICENSE file
-st you have to setup a working environment with Burp Proxy and Jython
-
-* Download the latest Jython from [here](http://www.jython.org/downloads.html)
-* Find your local python packages installation folder*
-* Configure Burp Extender to use these values, as shown below*
-
-<img src="https://lightbulb-framework.github.io/assets/images/burp_jython_python.png" width="300">
-
-* Select the new LightBulb module ("BurpExtension.py") and set the extension type to be "Python"
-
-<img src="https://lightbulb-framework.github.io/assets/images/burp_extension.png" width="600">
-
-*You can ignore this step, and install the standalone version which contains all the required python packages included. You can download it [here](https://github.com/lightbulb-framework/lightbulb-framework/files/2079793/lightbulb-framework.zip)
 
 ## Examples
 
