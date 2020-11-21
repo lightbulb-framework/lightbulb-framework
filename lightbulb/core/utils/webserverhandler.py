@@ -101,7 +101,7 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                                 try {
                                     el[k].click();
                                 } catch (error) {
-                                    console.log(error);
+                                    //console.log(error);
                                 }
                             }
                         }
