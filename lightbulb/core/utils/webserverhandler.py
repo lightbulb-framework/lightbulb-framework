@@ -94,14 +94,18 @@ class WebServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 document.getElementById("output").innerHTML = "<img src=# onerror='changed=1'>"+vector;
                 console.log(vector);
                 var el =  document.getElementById("output").childNodes;
-                if (el.length>1){
-                    for (var k in el){
-                      if (el[k] instanceof HTMLElement || el[k].nodeType > 0){
-                        if ("onclick" in el[k]){
-                          el[k].click();
+                if (el.length > 1) {
+                    for (var k in el) {
+                        if (el[k] instanceof HTMLElement || el[k].nodeType > 0) {
+                            if ("onclick" in el[k]) {
+                                try {
+                                    el[k].click();
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            }
                         }
-                      }
-                  }
+                    }
                 }
                 waitUntil(
                   function () {
